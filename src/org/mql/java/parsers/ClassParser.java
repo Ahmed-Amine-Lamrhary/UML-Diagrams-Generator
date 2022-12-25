@@ -95,4 +95,9 @@ public class ClassParser {
 	public String getModifiers() {
 		return modifiers;
 	}
+	
+	@Override
+	public String toString() {
+		return className;
+	}
 }
