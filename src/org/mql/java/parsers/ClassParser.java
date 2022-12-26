@@ -8,9 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
+import org.mql.java.utils.ClazzLoader;
+
 public class ClassParser {
-	private Class<?> classe;
 	private String className;
+	private Class<?> classe;
 	private String modifiers;
 	private List<Field> fields;
 	private List<Method> methods;
@@ -18,46 +20,35 @@ public class ClassParser {
 	private List<Constructor<?>> constructors;
 	private List<Class<?>> interfaces;
 	private List<Class<?>> innerClasses;
-	private String inheritanceChain[];
-				
-	public ClassParser(String className) throws ClassNotFoundException {
-		try {
-			classe = Class.forName(className);
-			
-			this.className = className;
-			modifiers = Modifier.toString(classe.getModifiers());
-			fields = new Vector<Field>(Arrays.asList(classe.getDeclaredFields()));
-			superClass = classe.getSuperclass();
-			methods = new Vector<Method>(Arrays.asList(classe.getDeclaredMethods()));
-			constructors = new Vector<Constructor<?>>(Arrays.asList(classe.getDeclaredConstructors()));
-			interfaces = new Vector<Class<?>>(Arrays.asList(classe.getInterfaces()));
-			innerClasses = new Vector<Class<?>>(Arrays.asList(classe.getDeclaredClasses()));
-			loadInheritanceChain();			
-			
-		} catch (ClassNotFoundException e) {
-			System.out.println("Erreur : " + e.getMessage());
-			throw e;
-		}
+	private List<String> inheritanceChain;
+	
+	public ClassParser(String projectPath, String className) {
+		this(ClazzLoader.forName(projectPath, className));
+	}
+	
+	public ClassParser(Class<?> classe) {
+		this.classe = classe;
+		className = classe.getName();
+		modifiers = Modifier.toString(classe.getModifiers());
+		fields = new Vector<Field>(Arrays.asList(classe.getDeclaredFields()));
+		superClass = classe.getSuperclass();
+		methods = new Vector<Method>(Arrays.asList(classe.getDeclaredMethods()));
+		constructors = new Vector<Constructor<?>>(Arrays.asList(classe.getDeclaredConstructors()));
+		interfaces = new Vector<Class<?>>(Arrays.asList(classe.getInterfaces()));
+		innerClasses = new Vector<Class<?>>(Arrays.asList(classe.getDeclaredClasses()));
+		loadInheritanceChain();
 	}
 
 	private void loadInheritanceChain() {
-		if (className == null) {
-			inheritanceChain = new String[0];
-		}
-		else {
-			List<String> list = new Vector<String>();
-			
-			Class<?> current = classe;
-			
-			list.add(className);
-			
-			while (current.getSuperclass() != null) {
-				list.add(current.getSuperclass().getName());
-				current = current.getSuperclass();
-			}
-			
-			inheritanceChain = list.toArray(new String[list.size()]);
-		}
+		inheritanceChain = new Vector<String>();
+		Class<?> current = classe;
+		
+		inheritanceChain.add(className);
+		
+		while (current.getSuperclass() != null) {
+			inheritanceChain.add(current.getSuperclass().getName());
+			current = current.getSuperclass();
+		}		
 	}
 
 	public Class<?> getClasse() {
@@ -88,7 +79,7 @@ public class ClassParser {
 		return innerClasses;
 	}
 
-	public String[] getInheritanceChain() {
+	public List<String> getInheritanceChain() {
 		return inheritanceChain;
 	}
 	
@@ -98,6 +89,6 @@ public class ClassParser {
 	
 	@Override
 	public String toString() {
-		return className;
+		return "Class : " + className;
 	}
 }
