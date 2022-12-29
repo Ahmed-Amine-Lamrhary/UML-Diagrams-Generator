@@ -1,24 +1,20 @@
 package org.mql.java.parsers;
 
-import org.mql.java.utils.ClazzLoader;
+import org.mql.java.models.Annotation;
+import org.mql.java.utils.ClasseLoader;
 
-public class AnnotationParser {
-	private String annotationName;
+public class AnnotationParser {	
+	private Annotation annotation;
 	
 	public AnnotationParser(String projectPath, String annotationName) {
-		this(ClazzLoader.forName(projectPath, annotationName));
+		this(ClasseLoader.forName(projectPath, annotationName));
 	}
 	
-	public AnnotationParser(Class<?> classe) {
-		annotationName = classe.getName();
+	public AnnotationParser(Class<?> clazz) {
+		annotation = new Annotation(clazz.getName());
 	}
 	
-	public String getAnnotationName() {
-		return annotationName;
-	}
-	
-	@Override
-	public String toString() {
-		return "Annotation : " + annotationName;
+	public Annotation getAnnotation() {
+		return annotation;
 	}
 }

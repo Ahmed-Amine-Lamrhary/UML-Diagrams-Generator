@@ -2,105 +2,67 @@ package org.mql.java.parsers;
 
 import java.io.File;
 import java.util.List;
+
 import java.util.Vector;
 
-import org.mql.java.utils.ClazzLoader;
+import org.mql.java.models.Annotation;
+import org.mql.java.models.Classe;
+import org.mql.java.models.Enumeration;
+import org.mql.java.models.Interface;
+import org.mql.java.models.PackageM;
+import org.mql.java.utils.ClasseLoader;
 
 public class PackageParser {
-	private String packageName;
-	private List<PackageParser> packages;
-	private List<ClassParser> classes;
-	private List<InterfaceParser> interfaces;
-	private List<EnumParser> enumerations;
-	private List<AnnotationParser> annotations;
+	private PackageM packageM;
 		
-	public PackageParser(String projectPath, String packageName) {
-		this.packageName = packageName;
-		packages = new Vector<PackageParser>();
-		classes = new Vector<ClassParser>();
-		interfaces = new Vector<InterfaceParser>();
-		enumerations = new Vector<EnumParser>();
-		annotations = new Vector<AnnotationParser>();
+	public PackageParser(String projectPath, String packageName) {		
+		packageM = new PackageM(packageName);
 		
 		String packagePath = packageName.replace(".", "/");
-		File dir = new File(projectPath + "/src/" + packagePath);
+		File dir = new File(projectPath + "/bin/" + packagePath);
 		File f[] = dir.listFiles();
+		
+		List<PackageM> packages = new Vector<PackageM>();
+		List<Annotation> annotations = new Vector<Annotation>();
+		List<Classe> classes = new Vector<Classe>();
+		List<Interface> interfaces = new Vector<Interface>();
+		List<Enumeration> enumerations = new Vector<Enumeration>();
 		
 		if (f != null) {
 			for (int i = 0; i < f.length; i++) {
 				String name = f[i].getName().replace(".class", "");
 				String fullname = packageName + "." + name;
-								
+
 				if (f[i].isFile() && f[i].getName().endsWith(".class")) {
-					Class<?> classFile = ClazzLoader.forName(projectPath, fullname);
+					Class<?> classFile = ClasseLoader.forName(projectPath, fullname);
 					
 					if (classFile.isAnnotation()) {
-						annotations.add(new AnnotationParser(classFile));
+						annotations.add(new AnnotationParser(classFile).getAnnotation());
 					}
 					else if (classFile.isInterface()) {
-						interfaces.add(new InterfaceParser(classFile));	
+						interfaces.add(new InterfaceParser(classFile).getInterface());	
 					}
 					else if (classFile.isEnum()) {
-						enumerations.add(new EnumParser(classFile));
+						enumerations.add(new EnumParser(classFile).getEnumeration());
 					}
 					else {
-						classes.add(new ClassParser(classFile));
+						classes.add(new ClassParser(projectPath, classFile, true).getClasse());
 					}
 				}
 				else if (f[i].isDirectory()) {
-					packages.add(new PackageParser(projectPath, fullname));
+					packages.add(new PackageParser(projectPath, fullname).getPackageM());
 				}
 			}
+			
+			packageM.setAnnotations(annotations);
+			packageM.setClasses(classes);
+			packageM.setEnumerations(enumerations);
+			packageM.setInterfaces(interfaces);
+			packageM.setPackages(packages);
 		}
-		
 	}
 	
-	public List<ClassParser> getClasses() {
-		return classes;
-	}
-	
-	public String getPackageName() {
-		return packageName;
-	}
-
-	public List<PackageParser> getPackages() {
-		return packages;
-	}
-	
-	public List<InterfaceParser> getInterfaces() {
-		return interfaces;
-	}
-
-	public List<EnumParser> getEnumerations() {
-		return enumerations;
-	}
-
-	public List<AnnotationParser> getAnnotations() {
-		return annotations;
-	}
-
-	@Override
-	public String toString() {
-		String out = "";
-		
-		out += "Package : " + packageName + "\n";
-		
-		for (PackageParser p : packages) {
-			out += "\t" + p + "\n";
-		}
-		for (ClassParser c : classes) {
-			out += "\t" + c + "\n";
-		}
-		for (AnnotationParser a : annotations) {
-			out += "\t" + a + "\n";
-		}
-		for (InterfaceParser i : interfaces) {
-			out += "\t" + i + "\n";
-		}
-		for (EnumParser e : enumerations) {
-			out += "\t" + e + "\n";
-		}
-		
-		return out;
+	public PackageM getPackageM() {
+		return packageM;
 	}
 }

@@ -3,7 +3,7 @@ package org.mql.java.utils;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-public class ClazzLoader {
+public class ClasseLoader {
 	public static Class<?> forName(String projectPath, String className) {
 		try {
 			URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[] {

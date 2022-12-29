@@ -8,87 +8,66 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import org.mql.java.utils.ClazzLoader;
+import org.mql.java.models.Classe;
 
 public class ClassParser {
-	private String className;
-	private Class<?> classe;
-	private String modifiers;
-	private List<Field> fields;
-	private List<Method> methods;
-	private Class<?> superClass;
-	private List<Constructor<?>> constructors;
-	private List<Class<?>> interfaces;
-	private List<Class<?>> innerClasses;
-	private List<String> inheritanceChain;
+	private String projectPath;
+	private Class<?> clazz;
+	private Classe classe;
 	
-	public ClassParser(String projectPath, String className) {
-		this(ClazzLoader.forName(projectPath, className));
-	}
-	
-	public ClassParser(Class<?> classe) {
-		this.classe = classe;
-		className = classe.getName();
-		modifiers = Modifier.toString(classe.getModifiers());
-		fields = new Vector<Field>(Arrays.asList(classe.getDeclaredFields()));
-		superClass = classe.getSuperclass();
-		methods = new Vector<Method>(Arrays.asList(classe.getDeclaredMethods()));
-		constructors = new Vector<Constructor<?>>(Arrays.asList(classe.getDeclaredConstructors()));
-		interfaces = new Vector<Class<?>>(Arrays.asList(classe.getInterfaces()));
-		innerClasses = new Vector<Class<?>>(Arrays.asList(classe.getDeclaredClasses()));
+	public ClassParser(String projectPath, Class<?> clazz, boolean innerClasses) {
+		this.projectPath = projectPath;
+		this.clazz = clazz;
+		
+		String name = clazz.getName();
+		Class<?> superClass = clazz.getSuperclass();
+		String modifiers = Modifier.toString(clazz.getModifiers());
+
+		classe = new Classe(name, modifiers, superClass);
+		
+		List<Field> fields = new Vector<Field>(Arrays.asList(clazz.getDeclaredFields()));
+		List<Method> methods = new Vector<Method>(Arrays.asList(clazz.getDeclaredMethods()));
+		List<Constructor<?>> constructors = new Vector<Constructor<?>>(Arrays.asList(clazz.getDeclaredConstructors()));
+		List<Class<?>> interfaces = new Vector<Class<?>>(Arrays.asList(clazz.getInterfaces()));
+		
+		classe.setFields(fields);
+		classe.setMethods(methods);
+		classe.setConstructors(constructors);
+		classe.setInterfaces(interfaces);
+		
 		loadInheritanceChain();
+		
+		if (innerClasses) {
+			loadInnerClasses();
+		}
+	}
+
+	private void loadInnerClasses() {
+		List<Classe> innerClasses = new Vector<Classe>();
+		
+		for (Class<?> c : clazz.getDeclaredClasses()) {
+			ClassParser classParser = new ClassParser(projectPath, c, false);
+			innerClasses.add(classParser.getClasse());
+		}
+		
+		classe.setInnerClasses(innerClasses);
 	}
 
 	private void loadInheritanceChain() {
-		inheritanceChain = new Vector<String>();
-		Class<?> current = classe;
+		List<String> inheritanceChain = new Vector<String>();
+		Class<?> current = clazz;
 		
-		inheritanceChain.add(className);
+		inheritanceChain.add(classe.getName());
 		
 		while (current.getSuperclass() != null) {
 			inheritanceChain.add(current.getSuperclass().getName());
 			current = current.getSuperclass();
-		}		
+		}
+		
+		classe.setInheritanceChain(inheritanceChain);
 	}
-
-	public Class<?> getClasse() {
+	
+	public Classe getClasse() {
 		return classe;
-	}
-
-	public List<Field> getFields() {
-		return fields;
-	}
-
-	public List<Method> getMethods() {
-		return methods;
-	}
-
-	public Class<?> getSuperClass() {
-		return superClass;
-	}
-
-	public List<Constructor<?>> getConstructors() {
-		return constructors;
-	}
-
-	public List<Class<?>> getInterfaces() {
-		return interfaces;
-	}
-
-	public List<Class<?>> getInnerClasses() {
-		return innerClasses;
-	}
-
-	public List<String> getInheritanceChain() {
-		return inheritanceChain;
-	}
-	
-	public String getModifiers() {
-		return modifiers;
-	}
-	
-	@Override
-	public String toString() {
-		return "Class : " + className;
 	}
 }

@@ -4,32 +4,43 @@ import java.io.File;
 import java.util.List;
 import java.util.Vector;
 
+import org.mql.java.models.PackageM;
+import org.mql.java.models.Project;
+
 public class ProjectParser {
-	private List<PackageParser> packages;
+	private String projectPath;
+	private Project project;
 	
-	public ProjectParser(String projectPath) {		
+	public ProjectParser(String projectPath) {
+		this.projectPath = projectPath;
+		project = new Project();
+		
 		try {
-			packages = new Vector<PackageParser>();
-			
-			File src = new File(projectPath+"/bin");
-					
-			for (File file : src.listFiles()) {
-				if (file.isDirectory()) {
-					packages.add(new PackageParser(projectPath, file.getName()));
-				}
-			}
+			loadPackages();
 		} catch(NullPointerException e) {
-			System.out.println("Project not found");
+			System.out.println("Erreur : " + e.getMessage());
 		}
 	}
 	
-	@Override
-	public String toString() {
-		String out = "";
-		for (PackageParser p : packages) {
-			out += p + "\n";
+	private void loadPackages() {
+		File src = new File(projectPath + "/bin");
+		
+		List<PackageM> packages = new Vector<PackageM>();
+		
+		for (File file : src.listFiles()) {
+			if (file.isDirectory()) {
+				packages.add(new PackageParser(projectPath, file.getName()).getPackageM());
+			}
 		}
 		
-		return out;
+		project.setPackages(packages);
+	}
+	
+	public Project getProject() {
+		return project;
+	}
+	
+	public String getProjectPath() {
+		return projectPath;
 	}
 }

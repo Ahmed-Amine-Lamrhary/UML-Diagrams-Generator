@@ -3,36 +3,29 @@ package org.mql.java.parsers;
 import java.util.List;
 import java.util.Vector;
 
-import org.mql.java.utils.ClazzLoader;
+import org.mql.java.models.Enumeration;
+import org.mql.java.utils.ClasseLoader;
 
 public class EnumParser {
-	private String enumName;
-	private List<String> values;
+	private Enumeration enumeration;
 	
 	public EnumParser(String projectPath, String enumName) {
-		this(ClazzLoader.forName(projectPath, enumName));
+		this(ClasseLoader.forName(projectPath, enumName));
 	}
 	
-	public EnumParser(Class<?> classe) {
-		enumName = classe.getName();
-		values = new Vector<String>();
+	public EnumParser(Class<?> clazz) {
+		enumeration = new Enumeration(clazz.getName());
+		
+		List<String> values = new Vector<String>();
 					
-		for (Object value : classe.getEnumConstants()) {
+		for (Object value : clazz.getEnumConstants()) {
 			values.add(value.toString());
 		}
-	}
-	
-
-	public String getName() {
-		return enumName;
+		
+		enumeration.setValues(values);
 	}
 
-	public List<String> getValues() {
-		return values;
-	}
-	
-	@Override
-	public String toString() {
-		return "Enum : " + enumName;
+	public Enumeration getEnumeration() {
+		return enumeration;
 	}
 }

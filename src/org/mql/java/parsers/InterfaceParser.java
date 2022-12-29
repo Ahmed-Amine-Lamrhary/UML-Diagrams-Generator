@@ -6,37 +6,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import org.mql.java.utils.ClazzLoader;
+import org.mql.java.models.Interface;
+import org.mql.java.utils.ClasseLoader;
 
 public class InterfaceParser {
-	private String interfaceName;
-	private List<Field> fields;
-	private List<Method> methods;
+	private Interface interfacee;
 	
 	public InterfaceParser(String projectPath, String interfaceName) {
-		this(ClazzLoader.forName(projectPath, interfaceName));
+		this(ClasseLoader.forName(projectPath, interfaceName));
 	}
 	
-	public InterfaceParser(Class<?> classe) {
-		interfaceName = classe.getName();
-		fields = new Vector<Field>(Arrays.asList(classe.getDeclaredFields()));
-		methods = new Vector<Method>(Arrays.asList(classe.getDeclaredMethods()));
+	public InterfaceParser(Class<?> clazz) {
+		interfacee = new Interface(clazz.getName());
+		
+		List<Field> fields = new Vector<Field>(Arrays.asList(clazz.getDeclaredFields()));
+		List<Method> methods = new Vector<Method>(Arrays.asList(clazz.getDeclaredMethods()));
+	
+		interfacee.setFields(fields);
+		interfacee.setMethods(methods);
 	}
 	
-	public String getName() {
-		return interfaceName;
-	}
-	
-	public List<Field> getFields() {
-		return fields;
-	}
-	
-	public List<Method> getMethods() {
-		return methods;
-	}
-	
-	@Override
-	public String toString() {
-		return "Interface : " + interfaceName;
+	public Interface getInterface() {
+		return interfacee;
 	}
 }

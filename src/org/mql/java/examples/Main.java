@@ -6,12 +6,15 @@ import org.mql.java.parsers.PackageParser;
 import org.mql.java.parsers.ProjectParser;
 
 public class Main {
-	String projectPath = "C:/Users/lamrh/eclipse-workspace/java-tp";
+	String workspacePath = "C:/Users/lamrh/eclipse-workspace";
+	String projectName = "p02-generics";
 
 	public Main() {
 		
-		ProjectParser projectParser = new ProjectParser(projectPath);
-		System.out.println(projectParser);
+		ProjectParser projectParser = new ProjectParser(workspacePath + "/" + projectName);
+		// System.out.println(project);
+		
+		System.out.println(projectParser.getProject());
 				
 		/*
 		PackageParser packageParser = new PackageParser(projectPath, "org.mql.java.generics");
