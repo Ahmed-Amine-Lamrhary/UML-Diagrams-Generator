@@ -15,6 +15,5 @@ public class ClasseLoader {
 			System.out.println("Class " + className + " not found");
 			return null;
 		}
-
 	}
 }

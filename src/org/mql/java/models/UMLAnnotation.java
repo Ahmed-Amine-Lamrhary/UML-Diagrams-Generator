@@ -1,8 +1,8 @@
 package org.mql.java.models;
 
-public class Annotation extends Model {
+public class UMLAnnotation extends UMLModel {
 
-	public Annotation(String name) {
+	public UMLAnnotation(String name) {
 		super(name);
 	}
 

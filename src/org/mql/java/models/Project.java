@@ -3,23 +3,23 @@ package org.mql.java.models;
 import java.util.List;
 
 public class Project {
-	private List<PackageM> packages;
+	private List<UMLPackage> packages;
 
 	public Project() {
 	}
 
-	public List<PackageM> getPackages() {
+	public List<UMLPackage> getPackages() {
 		return packages;
 	}
 	
-	public void setPackages(List<PackageM> packages) {
+	public void setPackages(List<UMLPackage> packages) {
 		this.packages = packages;
 	}
 	
 	@Override
 	public String toString() {
 		String out = "";
-		for (PackageM p : packages) {
+		for (UMLPackage p : packages) {
 			out += p + "\n";
 		}
 		

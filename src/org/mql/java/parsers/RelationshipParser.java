@@ -1,8 +1,18 @@
 package org.mql.java.parsers;
 
+import java.util.Set;
+
+import org.mql.java.models.Project;
+import org.mql.java.models.UMLRelationship;
+
 public class RelationshipParser {
-	public RelationshipParser() {
-		// TODO Auto-generated constructor stub
+	private Project project;
+	
+	private Set<UMLRelationship> packagesRelations;
+	private Set<UMLRelationship> classesRelations;
+	
+	public RelationshipParser(Project project) {
+		this.project = project;
 	}
 	
 	/*

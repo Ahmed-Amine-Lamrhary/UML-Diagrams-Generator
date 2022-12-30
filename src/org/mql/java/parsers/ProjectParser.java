@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Vector;
 
-import org.mql.java.models.PackageM;
+import org.mql.java.models.UMLPackage;
 import org.mql.java.models.Project;
 
 public class ProjectParser {
@@ -17,6 +17,8 @@ public class ProjectParser {
 		
 		try {
 			loadPackages();
+			
+			new RelationshipParser(project);
 		} catch(NullPointerException e) {
 			System.out.println("Erreur : " + e.getMessage());
 		}
@@ -25,7 +27,7 @@ public class ProjectParser {
 	private void loadPackages() {
 		File src = new File(projectPath + "/bin");
 		
-		List<PackageM> packages = new Vector<PackageM>();
+		List<UMLPackage> packages = new Vector<>();
 		
 		for (File file : src.listFiles()) {
 			if (file.isDirectory()) {

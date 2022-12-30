@@ -2,10 +2,10 @@ package org.mql.java.models;
 
 import java.util.List;
 
-public class Enumeration extends Model {
+public class UMLEnumeration extends UMLModel {
 	private List<String> values;
 
-	public Enumeration(String name) {
+	public UMLEnumeration(String name) {
 		super(name);
 	}
 

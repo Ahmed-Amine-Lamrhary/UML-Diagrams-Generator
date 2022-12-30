@@ -1,48 +1,36 @@
 package org.mql.java.models;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
-public class Classe extends Model {
-	private String modifiers;
-	private List<Field> fields;
-	private List<Method> methods;
+public class UMLClass extends UMLModel {
+	private List<UMLField> fields;
+	private List<UMLMethod> methods;
 	private Class<?> superClass;
 	private List<Constructor<?>> constructors;
 	private List<Class<?>> interfaces;
-	private List<Classe> innerClasses;
+	private List<UMLClass> innerClasses;
 	private List<String> inheritanceChain;
 	
-	public Classe(String name, String modifiers, Class<?> superClass) {
+	public UMLClass(String name, String modifiers, Class<?> superClass) {
 		super(name);
 		
-		this.modifiers = modifiers;
 		this.superClass = superClass;
 	}
 
-	public String getModifiers() {
-		return modifiers;
-	}
-
-	public void setModifiers(String modifiers) {
-		this.modifiers = modifiers;
-	}
-
-	public List<Field> getFields() {
+	public List<UMLField> getFields() {
 		return fields;
 	}
 
-	public void setFields(List<Field> fields) {
+	public void setFields(List<UMLField> fields) {
 		this.fields = fields;
 	}
 
-	public List<Method> getMethods() {
+	public List<UMLMethod> getMethods() {
 		return methods;
 	}
 
-	public void setMethods(List<Method> methods) {
+	public void setMethods(List<UMLMethod> methods) {
 		this.methods = methods;
 	}
 
@@ -70,11 +58,11 @@ public class Classe extends Model {
 		this.interfaces = interfaces;
 	}
 
-	public List<Classe> getInnerClasses() {
+	public List<UMLClass> getInnerClasses() {
 		return innerClasses;
 	}
 
-	public void setInnerClasses(List<Classe> innerClasses) {
+	public void setInnerClasses(List<UMLClass> innerClasses) {
 		this.innerClasses = innerClasses;
 	}
 

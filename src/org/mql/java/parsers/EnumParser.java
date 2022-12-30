@@ -3,18 +3,18 @@ package org.mql.java.parsers;
 import java.util.List;
 import java.util.Vector;
 
-import org.mql.java.models.Enumeration;
+import org.mql.java.models.UMLEnumeration;
 import org.mql.java.utils.ClasseLoader;
 
 public class EnumParser {
-	private Enumeration enumeration;
+	private UMLEnumeration enumeration;
 	
 	public EnumParser(String projectPath, String enumName) {
 		this(ClasseLoader.forName(projectPath, enumName));
 	}
 	
 	public EnumParser(Class<?> clazz) {
-		enumeration = new Enumeration(clazz.getName());
+		enumeration = new UMLEnumeration(clazz.getName());
 		
 		List<String> values = new Vector<String>();
 					
@@ -25,7 +25,7 @@ public class EnumParser {
 		enumeration.setValues(values);
 	}
 
-	public Enumeration getEnumeration() {
+	public UMLEnumeration getEnumeration() {
 		return enumeration;
 	}
 }

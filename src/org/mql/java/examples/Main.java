@@ -1,5 +1,7 @@
 package org.mql.java.examples;
 
+import java.lang.reflect.Modifier;
+
 import org.mql.java.parsers.ClassParser;
 import org.mql.java.parsers.EnumParser;
 import org.mql.java.parsers.PackageParser;
@@ -9,11 +11,12 @@ public class Main {
 	String workspacePath = "C:/Users/lamrh/eclipse-workspace";
 	String projectName = "p02-generics";
 
-	public Main() {
-		
+	class Test {
+		static int field;
+	}
+	
+	public Main() {		
 		ProjectParser projectParser = new ProjectParser(workspacePath + "/" + projectName);
-		// System.out.println(project);
-		
 		System.out.println(projectParser.getProject());
 				
 		/*

@@ -1,9 +1,20 @@
 package org.mql.java.enums;
 
 public enum RelationshipType {
-	ASSOCIATION,
-	AGGREGATION,
-	COMPOSITION,
-	EXTENSION,
-	DEPENDENCY
+	ASSOCIATION("_____"),
+	INHERITANCE("___|>"),
+	REALIZATION("---|>"),
+	DEPENDENCY("----->"),
+	AGGREGATION("---<>"),
+	COMPOSITION("----*");
+	
+	private String symbol;
+	
+	private RelationshipType(String symbol) {
+		this.symbol = symbol;
+	}
+	
+	public String getSymbol() {
+		return symbol;
+	}
 }

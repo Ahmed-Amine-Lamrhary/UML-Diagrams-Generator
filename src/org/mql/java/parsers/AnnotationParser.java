@@ -1,20 +1,20 @@
 package org.mql.java.parsers;
 
-import org.mql.java.models.Annotation;
+import org.mql.java.models.UMLAnnotation;
 import org.mql.java.utils.ClasseLoader;
 
 public class AnnotationParser {	
-	private Annotation annotation;
+	private UMLAnnotation annotation;
 	
 	public AnnotationParser(String projectPath, String annotationName) {
 		this(ClasseLoader.forName(projectPath, annotationName));
 	}
 	
 	public AnnotationParser(Class<?> clazz) {
-		annotation = new Annotation(clazz.getName());
+		annotation = new UMLAnnotation(clazz.getName());
 	}
 	
-	public Annotation getAnnotation() {
+	public UMLAnnotation getAnnotation() {
 		return annotation;
 	}
 }

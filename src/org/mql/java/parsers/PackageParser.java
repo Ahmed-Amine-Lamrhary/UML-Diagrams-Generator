@@ -5,28 +5,28 @@ import java.util.List;
 
 import java.util.Vector;
 
-import org.mql.java.models.Annotation;
-import org.mql.java.models.Classe;
-import org.mql.java.models.Enumeration;
-import org.mql.java.models.Interface;
-import org.mql.java.models.PackageM;
+import org.mql.java.models.UMLAnnotation;
+import org.mql.java.models.UMLClass;
+import org.mql.java.models.UMLEnumeration;
+import org.mql.java.models.UMLInterface;
+import org.mql.java.models.UMLPackage;
 import org.mql.java.utils.ClasseLoader;
 
 public class PackageParser {
-	private PackageM packageM;
+	private UMLPackage packageM;
 		
 	public PackageParser(String projectPath, String packageName) {		
-		packageM = new PackageM(packageName);
+		packageM = new UMLPackage(packageName);
 		
 		String packagePath = packageName.replace(".", "/");
 		File dir = new File(projectPath + "/bin/" + packagePath);
 		File f[] = dir.listFiles();
 		
-		List<PackageM> packages = new Vector<PackageM>();
-		List<Annotation> annotations = new Vector<Annotation>();
-		List<Classe> classes = new Vector<Classe>();
-		List<Interface> interfaces = new Vector<Interface>();
-		List<Enumeration> enumerations = new Vector<Enumeration>();
+		List<UMLPackage> packages = new Vector<UMLPackage>();
+		List<UMLAnnotation> annotations = new Vector<UMLAnnotation>();
+		List<UMLClass> classes = new Vector<UMLClass>();
+		List<UMLInterface> interfaces = new Vector<UMLInterface>();
+		List<UMLEnumeration> enumerations = new Vector<UMLEnumeration>();
 		
 		if (f != null) {
 			for (int i = 0; i < f.length; i++) {
@@ -62,7 +62,7 @@ public class PackageParser {
 		}
 	}
 	
-	public PackageM getPackageM() {
+	public UMLPackage getPackageM() {
 		return packageM;
 	}
 }
