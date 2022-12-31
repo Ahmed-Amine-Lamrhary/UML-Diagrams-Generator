@@ -1,17 +1,12 @@
 package org.mql.java.parsers;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import org.mql.java.enums.Visibility;
 import org.mql.java.models.UMLClass;
-import org.mql.java.models.UMLField;
-import org.mql.java.models.UMLMethod;
 import org.mql.java.utils.Utils;
 
 public class ClassParser {
@@ -32,8 +27,8 @@ public class ClassParser {
 		List<Constructor<?>> constructors = new Vector<Constructor<?>>(Arrays.asList(clazz.getDeclaredConstructors()));
 		List<Class<?>> interfaces = new Vector<Class<?>>(Arrays.asList(clazz.getInterfaces()));
 		
-		loadFields();
-		loadMethods();
+		classe.setFields(Utils.getUMLFields(clazz.getDeclaredFields()));
+		classe.setMethods(Utils.getUMLMethods(clazz.getDeclaredMethods()));
 		
 		classe.setConstructors(constructors);
 		classe.setInterfaces(interfaces);
@@ -45,42 +40,6 @@ public class ClassParser {
 		}
 	}
 
-	private void loadFields() {
-		List<UMLField> UMLFields = new Vector<>();
-		
-		for (Field field : clazz.getDeclaredFields()) {
-			int modifiers = field.getModifiers();
-			
-			Visibility visibility = Utils.getVisibilityFromModifiers(modifiers);
-			String name = field.getName();
-			String type = field.getType().getName();
-			boolean isStatic = Utils.isStatic(modifiers);
-			boolean isConstant = Utils.isConstant(modifiers);
-			
-			UMLFields.add(new UMLField(visibility, name, type, isStatic, isConstant));
-		}
-
-		classe.setFields(UMLFields);
-	}
-	
-	private void loadMethods() {
-		List<UMLMethod> UMLMethods = new Vector<>();
-		
-		for (Method method : clazz.getDeclaredMethods()) {
-			int modifiers = method.getModifiers();
-
-			Visibility visibility = Utils.getVisibilityFromModifiers(modifiers);
-			String name = method.getName();
-			String type = method.getReturnType().getName();
-			boolean isStatic = Utils.isStatic(modifiers);
-			boolean isConstant = Utils.isConstant(modifiers);
-
-			UMLMethods.add(new UMLMethod(visibility, name, type, isStatic, isConstant));
-		}
-
-		classe.setMethods(UMLMethods);
-	}
-	
 	private void loadInnerClasses() {
 		List<UMLClass> innerClasses = new Vector<UMLClass>();
 		

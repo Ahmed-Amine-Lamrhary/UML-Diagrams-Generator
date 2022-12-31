@@ -76,6 +76,17 @@ public class UMLClass extends UMLModel {
 	
 	@Override
 	public String toString() {
-		return "Class : " + name;
+		String out = "";
+		out += "Class " + name + "\n";
+		
+		for (UMLField field : fields) {
+			out += "\t \t \t" + field + "\n";
+		}
+		
+		for (UMLMethod method : methods) {
+			out += "\t \t \t" + method + "\n";
+		}
+		
+		return out;
 	}
 }

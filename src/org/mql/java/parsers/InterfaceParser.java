@@ -1,13 +1,8 @@
 package org.mql.java.parsers;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Vector;
-
 import org.mql.java.models.UMLInterface;
 import org.mql.java.utils.ClasseLoader;
+import org.mql.java.utils.Utils;
 
 public class InterfaceParser {
 	private UMLInterface interfacee;
@@ -18,12 +13,8 @@ public class InterfaceParser {
 	
 	public InterfaceParser(Class<?> clazz) {
 		interfacee = new UMLInterface(clazz.getName());
-		
-		List<Field> fields = new Vector<Field>(Arrays.asList(clazz.getDeclaredFields()));
-		List<Method> methods = new Vector<Method>(Arrays.asList(clazz.getDeclaredMethods()));
-	
-		interfacee.setFields(fields);
-		interfacee.setMethods(methods);
+		interfacee.setFields(Utils.getUMLFields(clazz.getDeclaredFields()));
+		interfacee.setMethods(Utils.getUMLMethods(clazz.getDeclaredMethods()));
 	}
 	
 	public UMLInterface getInterface() {

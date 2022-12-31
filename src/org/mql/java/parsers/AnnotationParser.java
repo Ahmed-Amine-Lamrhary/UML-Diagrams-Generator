@@ -2,6 +2,7 @@ package org.mql.java.parsers;
 
 import org.mql.java.models.UMLAnnotation;
 import org.mql.java.utils.ClasseLoader;
+import org.mql.java.utils.Utils;
 
 public class AnnotationParser {	
 	private UMLAnnotation annotation;
@@ -12,6 +13,7 @@ public class AnnotationParser {
 	
 	public AnnotationParser(Class<?> clazz) {
 		annotation = new UMLAnnotation(clazz.getName());
+		annotation.setMethods(Utils.getUMLMethods(clazz.getDeclaredMethods()));
 	}
 	
 	public UMLAnnotation getAnnotation() {

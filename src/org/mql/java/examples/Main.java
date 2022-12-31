@@ -1,37 +1,15 @@
 package org.mql.java.examples;
 
-import java.lang.reflect.Modifier;
-
-import org.mql.java.parsers.ClassParser;
-import org.mql.java.parsers.EnumParser;
-import org.mql.java.parsers.PackageParser;
 import org.mql.java.parsers.ProjectParser;
 
 public class Main {
 	String workspacePath = "C:/Users/lamrh/eclipse-workspace";
-	String projectName = "p02-generics";
+	String projectName = "Lamrhary Ahmed Amine - TP-03-2 UML Diagrams Generator";
 
-	class Test {
-		static int field;
-	}
-	
 	public Main() {		
 		ProjectParser projectParser = new ProjectParser(workspacePath + "/" + projectName);
-		System.out.println(projectParser.getProject());
-				
-		/*
-		PackageParser packageParser = new PackageParser(projectPath, "org.mql.java.generics");
-		System.out.println(packageParser.getPackages());
-		System.out.println(packageParser.getClasses());
-		System.out.println(packageParser.getInterfaces());
-		System.out.println(packageParser.getEnumerations());
-		System.out.println(packageParser.getAnnotations());
-		*/
 		
-		/*
-		EnumParser enumParser = new EnumParser("org.mql.java.test.EnumTest");
-		System.out.println(enumParser.getValues());
-		*/
+		System.out.println(projectParser.getProject());
 	}
 
 	public static void main(String[] args) {

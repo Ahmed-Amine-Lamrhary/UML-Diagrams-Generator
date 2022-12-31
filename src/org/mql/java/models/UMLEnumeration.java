@@ -19,6 +19,13 @@ public class UMLEnumeration extends UMLModel {
 	
 	@Override
 	public String toString() {
-		return "Enum : " + name;
+		String out = "";
+		out += "Enumeration " + name + "\n";
+		
+		for (String value : values) {
+			out += "\t \t \t" + value + "\n";
+		}
+		
+		return out;
 	}
 }

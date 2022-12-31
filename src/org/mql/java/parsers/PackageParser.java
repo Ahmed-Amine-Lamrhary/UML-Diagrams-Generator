@@ -13,13 +13,22 @@ import org.mql.java.models.UMLPackage;
 import org.mql.java.utils.ClasseLoader;
 
 public class PackageParser {
-	private UMLPackage packageM;
-		
-	public PackageParser(String projectPath, String packageName) {		
-		packageM = new UMLPackage(packageName);
+	private UMLPackage umlPackage;
+	
+	public PackageParser(String projectPath) {
+		this(projectPath, "");
+	}
+	
+	public PackageParser(String projectPath, String packageName) {
+		umlPackage = new UMLPackage("".equals(packageName) ? "default package" : packageName);
 		
 		String packagePath = packageName.replace(".", "/");
-		File dir = new File(projectPath + "/bin/" + packagePath);
+		String fullPath = projectPath + "/bin";
+		
+		if (!"".equals(packageName))
+			fullPath += "/" + packagePath;
+		
+		File dir = new File(fullPath);
 		File f[] = dir.listFiles();
 		
 		List<UMLPackage> packages = new Vector<UMLPackage>();
@@ -29,9 +38,14 @@ public class PackageParser {
 		List<UMLEnumeration> enumerations = new Vector<UMLEnumeration>();
 		
 		if (f != null) {
-			for (int i = 0; i < f.length; i++) {
+			for (int i = 0; i < f.length; i++) {				
 				String name = f[i].getName().replace(".class", "");
-				String fullname = packageName + "." + name;
+				String fullname = "";
+				
+				if (!"".equals(packageName))
+					fullname += packageName + ".";
+				
+				fullname += name;
 
 				if (f[i].isFile() && f[i].getName().endsWith(".class")) {
 					Class<?> classFile = ClasseLoader.forName(projectPath, fullname);
@@ -50,19 +64,19 @@ public class PackageParser {
 					}
 				}
 				else if (f[i].isDirectory()) {
-					packages.add(new PackageParser(projectPath, fullname).getPackageM());
+					packages.add(new PackageParser(projectPath, fullname).getUmlPackage());
 				}
 			}
 			
-			packageM.setAnnotations(annotations);
-			packageM.setClasses(classes);
-			packageM.setEnumerations(enumerations);
-			packageM.setInterfaces(interfaces);
-			packageM.setPackages(packages);
+			umlPackage.setAnnotations(annotations);
+			umlPackage.setClasses(classes);
+			umlPackage.setEnumerations(enumerations);
+			umlPackage.setInterfaces(interfaces);
+			umlPackage.setPackages(packages);
 		}
 	}
 	
-	public UMLPackage getPackageM() {
-		return packageM;
+	public UMLPackage getUmlPackage() {
+		return umlPackage;
 	}
 }
