@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.mql.java.enums.Visibility;
 
-public class UMLMethod {
+public class UMLOperation {
 	private Visibility visibility;
 	private String name;
 	private String returnType;
@@ -12,7 +12,13 @@ public class UMLMethod {
 	private boolean isFinal;
 	private List<UMLParameter> parameters;
 
-	public UMLMethod(Visibility visibility, String name, String returnType, boolean isStatic, boolean isFinal) {
+	public UMLOperation(Visibility visibility, String name) {
+		super();
+		this.visibility = visibility;
+		this.name = name;
+	}
+	
+	public UMLOperation(Visibility visibility, String name, String returnType, boolean isStatic, boolean isFinal) {
 		super();
 		this.visibility = visibility;
 		this.name = name;
@@ -78,10 +84,13 @@ public class UMLMethod {
 			out += parameters.get(i);
 			
 			if (i < parameters.size()-1)
-				out += ",";
+				out += ", ";
 		}
 		
-		out += ") : " + returnType;
+		out += ")";
+		
+		if (returnType != null)
+			out += " : " + returnType;
 		
 		return out;
 	}

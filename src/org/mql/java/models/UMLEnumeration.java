@@ -23,7 +23,7 @@ public class UMLEnumeration extends UMLModel {
 		out += "Enumeration " + name + "\n";
 		
 		for (String value : values) {
-			out += "\t \t \t" + value + "\n";
+			out += "\t \t" + value + "\n";
 		}
 		
 		return out;

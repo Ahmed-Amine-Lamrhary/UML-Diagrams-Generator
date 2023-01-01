@@ -13,8 +13,8 @@ public class InterfaceParser {
 	
 	public InterfaceParser(Class<?> clazz) {
 		interfacee = new UMLInterface(clazz.getName());
-		interfacee.setFields(Utils.getUMLFields(clazz.getDeclaredFields()));
-		interfacee.setMethods(Utils.getUMLMethods(clazz.getDeclaredMethods()));
+		interfacee.setFields(Utils.getUMLAttributes(clazz.getDeclaredFields()));
+		interfacee.setMethods(Utils.getUMLOperations(clazz.getDeclaredMethods()));
 	}
 	
 	public UMLInterface getInterface() {

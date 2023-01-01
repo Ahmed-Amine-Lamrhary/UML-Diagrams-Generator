@@ -13,7 +13,7 @@ public class AnnotationParser {
 	
 	public AnnotationParser(Class<?> clazz) {
 		annotation = new UMLAnnotation(clazz.getName());
-		annotation.setMethods(Utils.getUMLMethods(clazz.getDeclaredMethods()));
+		annotation.setMethods(Utils.getUMLOperations(clazz.getDeclaredMethods()));
 	}
 	
 	public UMLAnnotation getAnnotation() {

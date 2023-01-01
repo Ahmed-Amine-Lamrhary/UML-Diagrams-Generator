@@ -7,15 +7,11 @@ import java.io.File;
 import org.mql.java.models.Project;
 
 public class ProjectParser {
-	private String projectPath;
 	private Project project;
 	
-	public ProjectParser(String projectPath) {
-		this.projectPath = projectPath;
-		
+	public ProjectParser(String projectPath) {		
 		try {
 			File dir = new File(projectPath);
-			
 			UMLPackage defaultPackage = new PackageParser(projectPath).getUmlPackage();
 			project = new Project(dir.getName(), defaultPackage);
 		} catch(NullPointerException e) {
@@ -25,9 +21,5 @@ public class ProjectParser {
 	
 	public Project getProject() {
 		return project;
-	}
-	
-	public String getProjectPath() {
-		return projectPath;
 	}
 }

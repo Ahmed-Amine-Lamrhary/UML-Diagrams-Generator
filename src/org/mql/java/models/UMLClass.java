@@ -1,13 +1,12 @@
 package org.mql.java.models;
 
-import java.lang.reflect.Constructor;
 import java.util.List;
 
 public class UMLClass extends UMLModel {
-	private List<UMLField> fields;
-	private List<UMLMethod> methods;
+	private List<UMLAttribute> fields;
+	private List<UMLOperation> methods;
 	private Class<?> superClass;
-	private List<Constructor<?>> constructors;
+	private List<UMLOperation> constructors;
 	private List<Class<?>> interfaces;
 	private List<UMLClass> innerClasses;
 	private List<String> inheritanceChain;
@@ -18,19 +17,19 @@ public class UMLClass extends UMLModel {
 		this.superClass = superClass;
 	}
 
-	public List<UMLField> getFields() {
+	public List<UMLAttribute> getFields() {
 		return fields;
 	}
 
-	public void setFields(List<UMLField> fields) {
+	public void setFields(List<UMLAttribute> fields) {
 		this.fields = fields;
 	}
 
-	public List<UMLMethod> getMethods() {
+	public List<UMLOperation> getMethods() {
 		return methods;
 	}
 
-	public void setMethods(List<UMLMethod> methods) {
+	public void setMethods(List<UMLOperation> methods) {
 		this.methods = methods;
 	}
 
@@ -42,11 +41,11 @@ public class UMLClass extends UMLModel {
 		this.superClass = superClass;
 	}
 
-	public List<Constructor<?>> getConstructors() {
+	public List<UMLOperation> getConstructors() {
 		return constructors;
 	}
 
-	public void setConstructors(List<Constructor<?>> constructors) {
+	public void setConstructors(List<UMLOperation> constructors) {
 		this.constructors = constructors;
 	}
 
@@ -79,12 +78,16 @@ public class UMLClass extends UMLModel {
 		String out = "";
 		out += "Class " + name + "\n";
 		
-		for (UMLField field : fields) {
-			out += "\t \t \t" + field + "\n";
+		for (UMLOperation constructor : constructors) {
+			out += "\t \t" + constructor + "\n";
 		}
 		
-		for (UMLMethod method : methods) {
-			out += "\t \t \t" + method + "\n";
+		for (UMLAttribute field : fields) {
+			out += "\t \t" + field + "\n";
+		}
+		
+		for (UMLOperation method : methods) {
+			out += "\t \t" + method + "\n";
 		}
 		
 		return out;

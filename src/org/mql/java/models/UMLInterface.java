@@ -3,26 +3,26 @@ package org.mql.java.models;
 import java.util.List;
 
 public class UMLInterface extends UMLModel {
-	private List<UMLField> fields;
-	private List<UMLMethod> methods;
+	private List<UMLAttribute> fields;
+	private List<UMLOperation> methods;
 	
 	public UMLInterface(String name) {
 		super(name);
 	}
 	
-	public List<UMLField> getFields() {
+	public List<UMLAttribute> getFields() {
 		return fields;
 	}
 
-	public void setFields(List<UMLField> fields) {
+	public void setFields(List<UMLAttribute> fields) {
 		this.fields = fields;
 	}
 
-	public List<UMLMethod> getMethods() {
+	public List<UMLOperation> getMethods() {
 		return methods;
 	}
 
-	public void setMethods(List<UMLMethod> methods) {
+	public void setMethods(List<UMLOperation> methods) {
 		this.methods = methods;
 	}
 
@@ -31,12 +31,12 @@ public class UMLInterface extends UMLModel {
 		String out = "";
 		out += "Interface " + name + "\n";
 		
-		for (UMLField field : fields) {
-			out += "\t \t \t" + field + "\n";
+		for (UMLAttribute field : fields) {
+			out += "\t \t" + field + "\n";
 		}
 		
-		for (UMLMethod method : methods) {
-			out += "\t \t \t" + method + "\n";
+		for (UMLOperation method : methods) {
+			out += "\t \t" + method + "\n";
 		}
 		
 		return out;

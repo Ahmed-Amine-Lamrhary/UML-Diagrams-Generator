@@ -2,14 +2,14 @@ package org.mql.java.models;
 
 import org.mql.java.enums.Visibility;
 
-public class UMLField {
+public class UMLAttribute {
 	private Visibility visibility;
 	private String name;
 	private String type;
 	private boolean isStatic;
 	private boolean isFinal;
 	
-	public UMLField(Visibility visibility, String name, String type, boolean isStatic, boolean isFinal) {
+	public UMLAttribute(Visibility visibility, String name, String type, boolean isStatic, boolean isFinal) {
 		super();
 		this.visibility = visibility;
 		this.name = name;

@@ -1,6 +1,5 @@
 package org.mql.java.parsers;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
@@ -24,13 +23,12 @@ public class ClassParser {
 
 		classe = new UMLClass(name, modifiers, superClass);
 		
-		List<Constructor<?>> constructors = new Vector<Constructor<?>>(Arrays.asList(clazz.getDeclaredConstructors()));
 		List<Class<?>> interfaces = new Vector<Class<?>>(Arrays.asList(clazz.getInterfaces()));
 		
-		classe.setFields(Utils.getUMLFields(clazz.getDeclaredFields()));
-		classe.setMethods(Utils.getUMLMethods(clazz.getDeclaredMethods()));
+		classe.setFields(Utils.getUMLAttributes(clazz.getDeclaredFields()));
+		classe.setMethods(Utils.getUMLOperations(clazz.getDeclaredMethods()));
 		
-		classe.setConstructors(constructors);
+		classe.setConstructors(Utils.getUMLOperations(clazz.getSimpleName(), clazz.getDeclaredConstructors()));
 		classe.setInterfaces(interfaces);
 		
 		loadInheritanceChain();

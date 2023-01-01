@@ -29,8 +29,9 @@ public class Project {
 	@Override
 	public String toString() {
 		String out = "Project : " + name + "\n";
+		out += "-".repeat(out.length()) + "\n";
 
-		out += "\t" + defaultPackage;
+		out += defaultPackage;
 		
 		return out;
 	}

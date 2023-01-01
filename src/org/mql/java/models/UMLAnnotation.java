@@ -3,17 +3,17 @@ package org.mql.java.models;
 import java.util.List;
 
 public class UMLAnnotation extends UMLModel {
-	private List<UMLMethod> methods;
+	private List<UMLOperation> methods;
 	
 	public UMLAnnotation(String name) {
 		super(name);
 	}
 
-	public List<UMLMethod> getMethods() {
+	public List<UMLOperation> getMethods() {
 		return methods;
 	}
 	
-	public void setMethods(List<UMLMethod> methods) {
+	public void setMethods(List<UMLOperation> methods) {
 		this.methods = methods;
 	}
 	
@@ -22,7 +22,7 @@ public class UMLAnnotation extends UMLModel {
 		String out = "";
 		out += "Annotation " + name + "\n";
 		
-		for (UMLMethod method : methods) {
+		for (UMLOperation method : methods) {
 			out += "\t \t \t" + method + "\n";
 		}
 		

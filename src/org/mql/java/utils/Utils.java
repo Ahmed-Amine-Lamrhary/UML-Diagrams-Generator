@@ -1,5 +1,6 @@
 package org.mql.java.utils;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -8,8 +9,8 @@ import java.util.List;
 import java.util.Vector;
 
 import org.mql.java.enums.Visibility;
-import org.mql.java.models.UMLField;
-import org.mql.java.models.UMLMethod;
+import org.mql.java.models.UMLAttribute;
+import org.mql.java.models.UMLOperation;
 import org.mql.java.models.UMLParameter;
 
 public class Utils {
@@ -41,8 +42,8 @@ public class Utils {
 		return modifiersString.contains("final");
 	}
 	
-	public static List<UMLField> getUMLFields(Field[] fields) {
-		List<UMLField> UMLFields = new Vector<>();
+	public static List<UMLAttribute> getUMLAttributes(Field[] fields) {
+		List<UMLAttribute> UMLFields = new Vector<>();
 		
 		for (Field field : fields) {
 			int modifiers = field.getModifiers();
@@ -53,14 +54,14 @@ public class Utils {
 			boolean isStatic = Utils.isStatic(modifiers);
 			boolean isFinal = Utils.isFinal(modifiers);
 			
-			UMLFields.add(new UMLField(visibility, name, type, isStatic, isFinal));
+			UMLFields.add(new UMLAttribute(visibility, name, type, isStatic, isFinal));
 		}
 		
 		return UMLFields;
 	}
 	
-	public static List<UMLMethod> getUMLMethods(Method[] methods) {
-		List<UMLMethod> UMLMethods = new Vector<>();
+	public static List<UMLOperation> getUMLOperations(Method[] methods) {
+		List<UMLOperation> UMLOperations = new Vector<>();
 		
 		for (Method method : methods) {
 			int modifiers = method.getModifiers();
@@ -71,13 +72,30 @@ public class Utils {
 			boolean isStatic = Utils.isStatic(modifiers);
 			boolean isFinal = Utils.isFinal(modifiers);
 
-			UMLMethod umlMethod = new UMLMethod(visibility, name, type, isStatic, isFinal);
-			umlMethod.setParameters(getUMLParameters(method.getParameters()));
+			UMLOperation umlOperation = new UMLOperation(visibility, name, type, isStatic, isFinal);
+			umlOperation.setParameters(getUMLParameters(method.getParameters()));
 			
-			UMLMethods.add(umlMethod);
+			UMLOperations.add(umlOperation);
 		}
 		
-		return UMLMethods;
+		return UMLOperations;
+	}
+	
+	public static List<UMLOperation> getUMLOperations(String className, Constructor<?>[] constructors) {
+		List<UMLOperation> UMLOperations = new Vector<>();
+		
+		for (Constructor<?> constructor : constructors) {
+			int modifiers = constructor.getModifiers();
+
+			Visibility visibility = getVisibilityFromModifiers(modifiers);
+
+			UMLOperation umlOperation = new UMLOperation(visibility, className);
+			umlOperation.setParameters(getUMLParameters(constructor.getParameters()));
+			
+			UMLOperations.add(umlOperation);
+		}
+		
+		return UMLOperations;
 	}
 	
 	public static List<UMLParameter> getUMLParameters(Parameter[] parameters) {
