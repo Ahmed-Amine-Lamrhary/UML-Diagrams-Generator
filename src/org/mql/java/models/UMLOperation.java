@@ -9,7 +9,6 @@ public class UMLOperation {
 	private String name;
 	private String returnType;
 	private boolean isStatic;
-	private boolean isFinal;
 	private List<UMLParameter> parameters;
 
 	public UMLOperation(Visibility visibility, String name) {
@@ -18,13 +17,12 @@ public class UMLOperation {
 		this.name = name;
 	}
 	
-	public UMLOperation(Visibility visibility, String name, String returnType, boolean isStatic, boolean isFinal) {
+	public UMLOperation(Visibility visibility, String name, String returnType, boolean isStatic) {
 		super();
 		this.visibility = visibility;
 		this.name = name;
 		this.returnType = returnType;
 		this.isStatic = isStatic;
-		this.isFinal = isFinal;
 	}
 	
 	public Visibility getVisibility() {
@@ -57,14 +55,6 @@ public class UMLOperation {
 
 	public void setStatic(boolean isStatic) {
 		this.isStatic = isStatic;
-	}
-	
-	public boolean isFinal() {
-		return isFinal;
-	}
-	
-	public void setFinal(boolean isFinal) {
-		this.isFinal = isFinal;
 	}
 
 	public List<UMLParameter> getParameters() {

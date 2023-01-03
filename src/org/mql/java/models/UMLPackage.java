@@ -2,55 +2,28 @@ package org.mql.java.models;
 
 import java.util.List;
 
-public class UMLPackage extends UMLModel {
-	private List<UMLPackage> packages;
-	private List<UMLClass> classes;
-	private List<UMLInterface> interfaces;
-	private List<UMLEnumeration> enumerations;
-	private List<UMLAnnotation> annotations;
+public class UMLPackage {
+	private String name;
+	private List<UMLModel> models;
 	
 	public UMLPackage(String name) {
-		super(name);
+		this.name = name;
 	}
 
-	public List<UMLPackage> getPackages() {
-		return packages;
+	public List<UMLModel> getModels() {
+		return models;
 	}
-
-	public void setPackages(List<UMLPackage> packages) {
-		this.packages = packages;
+	
+	public void setModels(List<UMLModel> models) {
+		this.models = models;
 	}
-
-	public List<UMLClass> getClasses() {
-		return classes;
+	
+	public String getName() {
+		return name;
 	}
-
-	public void setClasses(List<UMLClass> classes) {
-		this.classes = classes;
-	}
-
-	public List<UMLInterface> getInterfaces() {
-		return interfaces;
-	}
-
-	public void setInterfaces(List<UMLInterface> interfaces) {
-		this.interfaces = interfaces;
-	}
-
-	public List<UMLEnumeration> getEnumerations() {
-		return enumerations;
-	}
-
-	public void setEnumerations(List<UMLEnumeration> enumerations) {
-		this.enumerations = enumerations;
-	}
-
-	public List<UMLAnnotation> getAnnotations() {
-		return annotations;
-	}
-
-	public void setAnnotations(List<UMLAnnotation> annotations) {
-		this.annotations = annotations;
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	@Override
@@ -59,20 +32,8 @@ public class UMLPackage extends UMLModel {
 		
 		out += "Package : " + name + "\n";
 		
-		for (UMLClass c : classes) {
-			out += "\t" + c + "\n";
-		}
-		for (UMLAnnotation a : annotations) {
-			out += "\t" + a + "\n";
-		}
-		for (UMLInterface i : interfaces) {
-			out += "\t" + i + "\n";
-		}
-		for (UMLEnumeration e : enumerations) {
-			out += "\t" + e + "\n";
-		}
-		for (UMLPackage p : packages) {
-			out += "\t" + p + "\n";
+		for (UMLModel m : models) {
+			out += "\t" + m + "\n";
 		}
 				
 		return out + "\n";

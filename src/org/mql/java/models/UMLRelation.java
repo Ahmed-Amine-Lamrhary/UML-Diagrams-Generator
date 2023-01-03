@@ -1,13 +1,13 @@
 package org.mql.java.models;
 
-import org.mql.java.enums.RelationshipType;
+import org.mql.java.enums.RelationType;
 
-public class UMLRelationship {
+public class UMLRelation {
 	private UMLModel model1;
 	private UMLModel model2;
-	private RelationshipType type;
+	private RelationType type;
 	
-	public UMLRelationship(UMLModel model1, UMLModel model2, RelationshipType type) {		
+	public UMLRelation(UMLModel model1, UMLModel model2, RelationType type) {		
 		this.model1 = model1;
 		this.model2 = model2;
 		this.type = type;
@@ -21,7 +21,7 @@ public class UMLRelationship {
 		return model2;
 	}
 	
-	public RelationshipType getType() {
+	public RelationType getType() {
 		return type;
 	}
 

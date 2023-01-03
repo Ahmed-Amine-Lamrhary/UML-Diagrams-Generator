@@ -7,15 +7,18 @@ public class UMLAttribute {
 	private String name;
 	private String type;
 	private boolean isStatic;
-	private boolean isFinal;
 	
-	public UMLAttribute(Visibility visibility, String name, String type, boolean isStatic, boolean isFinal) {
+	public UMLAttribute(String name) {
+		super();
+		this.name = name;
+	}
+	
+	public UMLAttribute(Visibility visibility, String name, String type, boolean isStatic) {
 		super();
 		this.visibility = visibility;
 		this.name = name;
 		this.type = type;
 		this.isStatic = isStatic;
-		this.isFinal = isFinal;
 	}
 
 	public Visibility getVisibility() {
@@ -49,17 +52,21 @@ public class UMLAttribute {
 	public void setStatic(boolean isStatic) {
 		this.isStatic = isStatic;
 	}
-	
-	public boolean isFinal() {
-		return isFinal;
-	}
-	
-	public void setFinal(boolean isFinal) {
-		this.isFinal = isFinal;
-	}
 
 	@Override
-	public String toString() {				
-		return visibility.getSymbol() + " " + name + " : " + type;
+	public String toString() {
+		String out = "";
+		
+		if (visibility != null)
+			out += visibility.getSymbol() + " ";
+		
+		out += name;
+		
+		if (type != null) {
+			out += " : ";
+			out += type;			
+		}
+		
+		return out;
 	}
 }

@@ -1,6 +1,6 @@
 package org.mql.java.enums;
 
-public enum RelationshipType {
+public enum RelationType {
 	ASSOCIATION("_____"),
 	INHERITANCE("___|>"),
 	REALIZATION("---|>"),
@@ -10,7 +10,7 @@ public enum RelationshipType {
 	
 	private String symbol;
 	
-	private RelationshipType(String symbol) {
+	private RelationType(String symbol) {
 		this.symbol = symbol;
 	}
 	

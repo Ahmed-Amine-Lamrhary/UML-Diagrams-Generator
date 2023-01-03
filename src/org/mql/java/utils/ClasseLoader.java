@@ -4,16 +4,15 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class ClasseLoader {
-	public static Class<?> forName(String projectPath, String className) {
-		try {
-			URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[] {
-					new URL("file:///"+projectPath+"/bin/")
-			});
-			
-			return urlClassLoader.loadClass(className);
-		} catch (Exception e) {
-			System.out.println("Class " + className + " not found");
-			return null;
-		}
+	private URLClassLoader loader;
+	
+	public ClasseLoader(String projectPath) throws Exception {
+		loader = URLClassLoader.newInstance(new URL[] {
+				new URL("file:///"+projectPath+"/bin/")
+		});
+	}
+
+	public Class<?> loadClass(String className) throws Exception {
+		return loader.loadClass(className);
 	}
 }

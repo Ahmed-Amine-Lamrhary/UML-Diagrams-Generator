@@ -1,29 +1,30 @@
 package org.mql.java.models;
 
+import java.util.List;
+
 public class Project {
 	private String name;
-	private UMLPackage defaultPackage;
-	
-	public Project(String name, UMLPackage defaultPackage) {
+	private List<UMLPackage> packages;
+		
+	public Project(String name) {
 		super();
 		this.name = name;
-		this.defaultPackage = defaultPackage;
 	}
 
-	public UMLPackage getDefaultPackage() {
-		return defaultPackage;
-	}
-	
-	public void setDefaultPackage(UMLPackage defaultPackage) {
-		this.defaultPackage = defaultPackage;
-	}
-	
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public List<UMLPackage> getPackages() {
+		return packages;
+	}
+	
+	public void setPackages(List<UMLPackage> packages) {
+		this.packages = packages;
 	}
 	
 	@Override
@@ -31,7 +32,9 @@ public class Project {
 		String out = "Project : " + name + "\n";
 		out += "-".repeat(out.length()) + "\n";
 
-		out += defaultPackage;
+		for (UMLPackage umlPackage : packages) {
+			out += umlPackage;
+		}
 		
 		return out;
 	}
