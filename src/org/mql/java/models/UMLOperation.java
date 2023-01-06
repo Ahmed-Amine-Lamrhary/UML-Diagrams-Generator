@@ -9,7 +9,7 @@ public class UMLOperation {
 	private String name;
 	private String returnType;
 	private boolean isStatic;
-	private List<UMLParameter> parameters;
+	private List<UMLAttribute> parameters;
 
 	public UMLOperation(Visibility visibility, String name) {
 		super();
@@ -57,11 +57,11 @@ public class UMLOperation {
 		this.isStatic = isStatic;
 	}
 
-	public List<UMLParameter> getParameters() {
+	public List<UMLAttribute> getParameters() {
 		return parameters;
 	}
 
-	public void setParameters(List<UMLParameter> parameters) {
+	public void setParameters(List<UMLAttribute> parameters) {
 		this.parameters = parameters;
 	}
 

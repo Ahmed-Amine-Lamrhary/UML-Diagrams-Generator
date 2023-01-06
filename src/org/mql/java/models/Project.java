@@ -1,14 +1,24 @@
 package org.mql.java.models;
 
 import java.util.List;
+import java.util.Vector;
 
 public class Project {
 	private String name;
+	private static Project project;
 	private List<UMLPackage> packages;
+	
+	public static Project getInstance() {
+		if (project != null)
+				return project;
 		
-	public Project(String name) {
+		project = new Project();
+		return project;
+	}
+	
+	private Project() {
 		super();
-		this.name = name;
+		this.packages = new Vector<>();
 	}
 
 	public String getName() {
@@ -25,6 +35,10 @@ public class Project {
 	
 	public void setPackages(List<UMLPackage> packages) {
 		this.packages = packages;
+	}
+	
+	public void addPackage(UMLPackage pUmlPackage) {
+		this.packages.add(pUmlPackage);
 	}
 	
 	@Override

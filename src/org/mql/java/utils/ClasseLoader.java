@@ -6,9 +6,9 @@ import java.net.URLClassLoader;
 public class ClasseLoader {
 	private URLClassLoader loader;
 	
-	public ClasseLoader(String projectPath) throws Exception {
+	public ClasseLoader(String path) throws Exception {
 		loader = URLClassLoader.newInstance(new URL[] {
-				new URL("file:///"+projectPath+"/bin/")
+				new URL("file:///"+path+"/")
 		});
 	}
 

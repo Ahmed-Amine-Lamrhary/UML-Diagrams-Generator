@@ -13,6 +13,12 @@ public class UMLAttribute {
 		this.name = name;
 	}
 	
+	public UMLAttribute(String name, String type) {
+		super();
+		this.name = name;
+		this.type = type;
+	}
+	
 	public UMLAttribute(Visibility visibility, String name, String type, boolean isStatic) {
 		super();
 		this.visibility = visibility;

@@ -3,13 +3,16 @@ package org.mql.java.examples;
 import org.mql.java.parsers.ProjectParser;
 
 public class Main {
-	String workspacePath = "C:/Users/lamrh/eclipse-workspace";
-	String projectName = "Lamrhary Ahmed Amine - TP-03-2 UML Diagrams Generator";
+	String binPath = "C:/Users/lamrh/eclipse-workspace/p05-Multithreading/bin";
 
-	public Main() {		
-		ProjectParser projectParser = new ProjectParser(workspacePath + "/" + projectName);
-		
-		System.out.println(projectParser.getProject());
+	public Main() {
+		try {			
+			ProjectParser projectParser = new ProjectParser(binPath);
+			System.out.println(projectParser.getProject());
+		} catch (Exception e) {
+			e.printStackTrace();
+			// System.out.println("Erreur : " + e.getMessage());
+		}
 	}
 
 	public static void main(String[] args) {

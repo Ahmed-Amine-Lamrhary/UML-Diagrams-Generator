@@ -2,55 +2,49 @@ package org.mql.java.parsers;
 
 import java.io.File;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import org.mql.java.models.Project;
 import org.mql.java.models.UMLPackage;
 
-public class ProjectParser {
-	private Set<String> packagesList;
+public class ProjectParser implements Parser {
+	private Set<File> packagesList;
 	private Project project;
 	
-	public ProjectParser(String projectPath) {
+	public ProjectParser(String binPath) throws Exception {
 		packagesList = new HashSet<>();
-		
-		try {
-			loadPackagesList(projectPath + "\\bin");
-
-			project = new Project(projectPath);
-			
-			List<UMLPackage> packages = new Vector<>();
-			
-			for (String packageName : packagesList) {
-				UMLPackage p = new PackageParser(projectPath, packageName).getUmlPackage();
-				packages.add(p);
-			}
-			
-			project.setPackages(packages);
-		} catch(NullPointerException e) {
-			System.out.println("Erreur : " + e.getMessage());
-		}
+		parse(new File(binPath));
 	}
 	
-	private void loadPackagesList(String directoryName) {
-        File directory = new File(directoryName);
-
-        File[] fList = directory.listFiles();
-        
-        for (File file : fList) {
+	private void loadPackagesFiles(File directory) {                
+        for (File file : directory.listFiles()) {
             if (file.isFile()) {
-                String path = file.getPath();
-                String packName = path.substring(path.indexOf("bin")+4, path.lastIndexOf('\\'));
-                packagesList.add(packName.replace('\\', '.'));
+                packagesList.add(file.getParentFile());
             } else if (file.isDirectory()) {
-            	loadPackagesList(file.getAbsolutePath());
+            	loadPackagesFiles(file);
             }
         }
     }
 	
 	public Project getProject() {
 		return project;
+	}
+	
+	@Override
+	public void parse(File file) throws Exception {
+		loadPackagesFiles(file);
+		
+		project = Project.getInstance();
+		project.setName(file.getAbsolutePath());
+		
+		try {
+			for (File packageFile : packagesList) {
+				UMLPackage p = new PackageParser(packageFile).getUmlPackage();
+				project.addPackage(p);
+			}			
+		} catch(Exception e) {
+			throw e;
+		}
+		
 	}
 }
