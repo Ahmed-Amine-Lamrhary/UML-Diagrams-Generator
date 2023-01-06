@@ -1,16 +1,21 @@
 package org.mql.java.parsers;
 
 import java.io.File;
+import java.util.logging.Logger;
+
 import org.mql.java.models.UMLPackage;
 import org.mql.java.utils.StringResolver;
 
 public class PackageParser implements Parser {
+	private Logger logger = Logger.getLogger(getClass().getName());
 	private UMLPackage umlPackage;
 	private File dir;
 	
 	public PackageParser(File dir) throws Exception {
 		this.dir = dir;
+		logger.info("Parsing package : " + dir.getAbsolutePath());
 		parse(dir);
+		logger.info("Pakcage parsed");
 	}
 	
 	private boolean isPackage() {

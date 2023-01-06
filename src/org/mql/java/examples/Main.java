@@ -1,21 +1,36 @@
 package org.mql.java.examples;
 
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 import org.mql.java.parsers.ProjectParser;
 
 public class Main {
+	private Logger logger = Logger.getLogger(getClass().getName());
 	String binPath = "C:/Users/lamrh/eclipse-workspace/p05-Multithreading/bin";
 
 	public Main() {
-		try {			
+		configLogger();
+				
+		try {
 			ProjectParser projectParser = new ProjectParser(binPath);
-			System.out.println(projectParser.getProject());
+			logger.info(projectParser.getProject().toString());
 		} catch (Exception e) {
-			e.printStackTrace();
-			// System.out.println("Erreur : " + e.getMessage());
+			logger.severe(e.getMessage());
+		}
+	}
+	
+	void configLogger() {
+		try {
+			LogManager.getLogManager().readConfiguration(
+				getClass().getResourceAsStream("/logging.properties")
+			);
+		} catch (Exception e) {
+			System.out.println("Erreur : " + e.getMessage());
 		}
 	}
 
 	public static void main(String[] args) {
-		new Main();		
+		new Main();
 	}
 }

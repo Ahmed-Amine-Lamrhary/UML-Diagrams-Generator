@@ -8,6 +8,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.mql.java.enums.Visibility;
 import org.mql.java.models.UMLAttribute;
@@ -20,11 +21,14 @@ import org.mql.java.utils.ClasseLoader;
 import org.mql.java.utils.StringResolver;
 
 public class ClassifierParser implements Parser {
+	private Logger logger = Logger.getLogger(getClass().getName());
 	private UMLClassifier classifier;
 	private Class<?> clazz;
 	
 	public ClassifierParser(File file) throws Exception {
+		logger.info("Parsing classifier : " + file.getAbsolutePath());
 		parse(file);
+		logger.info("Classifier parsed");
 	}
 	
 	private Visibility getVisibility(int modifiers) {
