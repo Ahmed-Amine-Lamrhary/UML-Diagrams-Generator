@@ -1,0 +1,46 @@
+package org.mql.java.models;
+
+import org.mql.java.enums.Visibility;
+
+public abstract class UMLProperty extends UMLMember {
+	protected Visibility visibility;
+	protected Class<?> type;
+	protected boolean _static;
+
+	public UMLProperty(String name, Visibility visibility, Class<?> type, boolean _static) {
+		super(name);
+		this.visibility = visibility;
+		this.type = type;
+		this._static = _static;
+	}
+
+	public Visibility getVisibility() {
+		return visibility;
+	}
+	
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
+	}
+	
+	public String getSimpleType() {
+		if (type != null) return type.getSimpleName();
+		return null;
+	}
+
+	public Class<?> getType() {
+		if (type != null) return type;
+		return null;
+	}
+	
+	public void setType(Class<?> type) {
+		this.type = type;
+	}
+	
+	public boolean isStatic() {
+		return _static;
+	}
+	
+	public void set_static(boolean _static) {
+		this._static = _static;
+	}
+}

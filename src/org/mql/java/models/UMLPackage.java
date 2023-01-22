@@ -3,20 +3,21 @@ package org.mql.java.models;
 import java.util.List;
 import java.util.Vector;
 
-public class UMLPackage extends UMLElement {
+public class UMLPackage {
+	private String name;
 	private List<UMLClassifier> classifiers;
 	
 	public UMLPackage(String name) {
-		super(name);
+		this.name = name;
 		this.classifiers = new Vector<>();
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public List<UMLClassifier> getClassifiers() {
 		return classifiers;
-	}
-	
-	public void setClassifiers(List<UMLClassifier> classifiers) {
-		this.classifiers = classifiers;
 	}
 	
 	public void addClassifier(UMLClassifier classifier) {

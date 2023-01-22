@@ -1,70 +1,30 @@
 package org.mql.java.models;
 
 import java.util.List;
+import java.util.Vector;
 
 import org.mql.java.enums.Visibility;
 
-public class UMLOperation {
-	private Visibility visibility;
-	private String name;
-	private String returnType;
-	private boolean isStatic;
-	private List<UMLAttribute> parameters;
+public class UMLOperation extends UMLProperty {
+	private List<String> parameters;
 
-	public UMLOperation(Visibility visibility, String name) {
-		super();
-		this.visibility = visibility;
-		this.name = name;
+	public UMLOperation(String name, Visibility visibility) {
+		this(name, visibility, null, false);
 	}
 	
-	public UMLOperation(Visibility visibility, String name, String returnType, boolean isStatic) {
-		super();
-		this.visibility = visibility;
-		this.name = name;
-		this.returnType = returnType;
-		this.isStatic = isStatic;
+	public UMLOperation(String name, Visibility visibility, Class<?> type, boolean _static) {
+		super(name, visibility, type, _static);
+		parameters = new Vector<>();
 	}
 	
-	public Visibility getVisibility() {
-		return visibility;
+	public void addParameter(String parameter) {
+		parameters.add(parameter);
 	}
 
-	public void setVisibility(Visibility visibility) {
-		this.visibility = visibility;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getReturnType() {
-		return returnType;
-	}
-
-	public void setReturnType(String returnType) {
-		this.returnType = returnType;
-	}
-
-	public boolean isStatic() {
-		return isStatic;
-	}
-
-	public void setStatic(boolean isStatic) {
-		this.isStatic = isStatic;
-	}
-
-	public List<UMLAttribute> getParameters() {
+	public List<String> getParameters() {
 		return parameters;
 	}
-
-	public void setParameters(List<UMLAttribute> parameters) {
-		this.parameters = parameters;
-	}
-
+	
 	@Override
 	public String toString() {
 		String out = "";
@@ -79,8 +39,8 @@ public class UMLOperation {
 		
 		out += ")";
 		
-		if (returnType != null)
-			out += " : " + returnType;
+		if (type != null)
+			out += " : " + type;
 		
 		return out;
 	}

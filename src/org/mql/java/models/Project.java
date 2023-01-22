@@ -7,6 +7,7 @@ public class Project {
 	private String name;
 	private static Project project;
 	private List<UMLPackage> packages;
+	private List<UMLRelation> relations;
 	
 	public static Project getInstance() {
 		if (project != null)

@@ -15,7 +15,7 @@ public class PackageParser implements Parser {
 		this.dir = dir;
 		logger.info("Parsing package : " + dir.getAbsolutePath());
 		parse(dir);
-		logger.info("Pakcage parsed");
+		logger.info("Package parsed");
 	}
 	
 	private boolean isPackage() {

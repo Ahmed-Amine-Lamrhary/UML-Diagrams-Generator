@@ -1,8 +1,8 @@
 package org.mql.java.models;
 
-public class UMLEnum extends UMLClassifier {	
-	public UMLEnum(String name) {
-		super(name);
+public class UMLEnum extends UMLClassifier {
+	public UMLEnum(String name, String simpleName) {
+		super(name, simpleName);
 	}
 
 	@Override

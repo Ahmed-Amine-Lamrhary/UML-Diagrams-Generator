@@ -12,48 +12,65 @@ public class ProjectParser implements Parser {
 	private Logger logger = Logger.getLogger(getClass().getName());
 	private Set<File> packagesList;
 	private Project project;
-	
+
 	public ProjectParser(String binPath) throws Exception {
 		packagesList = new HashSet<>();
-		
+
 		logger.info("Parsing project : " + binPath);
 		parse(new File(binPath));
 		logger.info("Project parsed");
 	}
-	
-	private void loadPackagesFiles(File directory) {                
-        for (File file : directory.listFiles()) {
-            if (file.isFile()) {
-                packagesList.add(file.getParentFile());
-            } else if (file.isDirectory()) {
-            	loadPackagesFiles(file);
-            }
-        }
-    }
-	
+
+	private void loadPackagesFiles(File directory) {
+		for (File file : directory.listFiles()) {
+			if (file.isFile()) {
+				packagesList.add(file.getParentFile());
+			} else if (file.isDirectory()) {
+				loadPackagesFiles(file);
+			}
+		}
+	}
+
 	public Project getProject() {
 		return project;
 	}
-	
-	@Override
-	public void parse(File file) throws Exception {				
-		loadPackagesFiles(file);
-		
-		project = Project.getInstance();
-		project.setName(file.getAbsolutePath());
+
+	private void parsePackages() {
+		logger.info("Loading packages...");
 		
 		try {
-			logger.info("Loading packages...");
-			
 			for (File packageFile : packagesList) {
 				UMLPackage p = new PackageParser(packageFile).getUmlPackage();
-				project.addPackage(p);
+				project.addPackage(p);				
 			}
 			
 			logger.info("Packages loaded");
 		} catch(Exception e) {
+			logger.warning(e.getMessage());
+		}
+	}
+
+	private void parseRelations() {
+		logger.info("Detecting relations...");
+		
+		logger.info("Relations detection end");
+	}
+
+	@Override
+	public void parse(File file) throws Exception {
+		if (!file.exists()) throw new Exception("Project not found");
+		
+		loadPackagesFiles(file);
+
+		project = Project.getInstance();
+		project.setName(file.getAbsolutePath());
+
+		try {
+			parsePackages();
+			parseRelations();
+		} catch (Exception e) {
 			throw e;
 		}
-		
+
 	}
 }
