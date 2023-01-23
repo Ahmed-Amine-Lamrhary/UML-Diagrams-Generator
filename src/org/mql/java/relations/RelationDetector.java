@@ -91,6 +91,7 @@ public class RelationDetector {
 		if (parent instanceof UMLClass && child instanceof UMLClass) {
 			for (UMLMember member : parent.getUmlMembers()) {
 				if (member instanceof UMLAttribute) {
+					// found issue
 					if (ReflectionUtils.isClassAttribute((UMLClass) child, (UMLAttribute) member)) {
 						// is class attribute
 						association = new UMLRelation(child, parent, RelationType.ASSOCIATION);
