@@ -57,6 +57,10 @@ public class ClassifierParser implements Parser {
 		return Modifier.toString(modifiers).contains("static");
 	}
 	
+	private boolean isFinal(int modifiers) {
+		return Modifier.toString(modifiers).contains("final");
+	}
+	
 	private void loadUMLProperty(Member member) {
 		int modifiers = member.getModifiers();
 		Visibility visibility = getVisibility(modifiers);
@@ -64,7 +68,7 @@ public class ClassifierParser implements Parser {
 		
 		if (member instanceof Field) {
 			Class<?> type = ((Field) member).getType();
-			classifier.addUMLMember(new UMLAttribute(name, visibility, type, isStatic(modifiers)));
+			classifier.addUMLMember(new UMLAttribute(name, visibility, type, isStatic(modifiers), isFinal(modifiers)));
 		}
 		else {
 			UMLOperation umlOperation;
@@ -74,7 +78,7 @@ public class ClassifierParser implements Parser {
 			}
 			else {
 				Class<?> type = ((Method) member).getReturnType();
-				umlOperation = new UMLOperation(name, visibility, type, isStatic(modifiers));
+				umlOperation = new UMLOperation(name, visibility, type, isStatic(modifiers), isFinal(modifiers));
 			}			
 
 			for (Parameter p : ((Executable) member).getParameters()) {

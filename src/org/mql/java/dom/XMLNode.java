@@ -1,9 +1,15 @@
 package org.mql.java.dom;
 
+import java.io.File;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -19,14 +25,31 @@ public class XMLNode {
 		this.node = document.createElement(name);
 	}
 	
+	public XMLNode(String name) {
+		try {
+			if (document == null) {
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
+				DocumentBuilder builder = factory.newDocumentBuilder();
+				document = builder.newDocument();
+			}
+			
+			this.node = document.createElement(name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public XMLNode(Node node, Document document) {
 		super();
 		this.document = document;
 		this.node = node;
 	}
 	
-	public XMLNode(String source) {
+	public XMLNode() {
+		String source = "";
+		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
+		
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			document = builder.parse(source);
@@ -65,16 +88,23 @@ public class XMLNode {
 	}
 	
 	public String getValue() {
-		if (node.getNodeType() == Node.ELEMENT_NODE) {
-			return node.getFirstChild().getNodeValue();
+		if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
+			return node.getNodeValue();
 		}
-		return node.getNodeValue();
+		else if (node.getNodeType() == Node.ELEMENT_NODE) {
+			if (node.getFirstChild() != null || node.getFirstChild().getNodeValue() != null)
+				return node.getFirstChild().getNodeValue();
+
+			return null;
+		}
+		
+		return null;
 	}
 	
 	public String getName() {
 		return node.getNodeName();
 	}
-
+	
 	public boolean isElement() {
 		return node.getNodeType() == Node.ELEMENT_NODE;
 	}
@@ -116,7 +146,7 @@ public class XMLNode {
 	public void setAttribute(String name, String value) {
 		Node attribute = node.getAttributes().getNamedItem(name);
 		
-		if(attribute != null) {
+		if (attribute != null) {
 			attribute.setNodeValue(value);
 		} else {
 			Node attributeNode = document.createAttribute(name);
@@ -135,5 +165,23 @@ public class XMLNode {
 	
 	public Document getDocument() {
 		return document;
+	}
+	
+	public void persist() throws Exception {
+		String path = getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()
+				+ "\\project-dom.xml";
+		
+		File file = new File(path);
+		
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		
+		Transformer transformer = TransformerFactory.newInstance().newTransformer();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+		StreamResult result = new StreamResult(file);
+		DOMSource source = new DOMSource(node);
+		transformer.transform(source, result);
 	}
 }

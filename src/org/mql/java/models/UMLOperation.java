@@ -7,14 +7,17 @@ import org.mql.java.enums.Visibility;
 
 public class UMLOperation extends UMLProperty {
 	private List<String> parameters;
+	private boolean _constructor;
 
 	public UMLOperation(String name, Visibility visibility) {
-		this(name, visibility, null, false);
+		this(name, visibility, null, false, false);
+		_constructor = true;
 	}
 	
-	public UMLOperation(String name, Visibility visibility, Class<?> type, boolean _static) {
-		super(name, visibility, type, _static);
+	public UMLOperation(String name, Visibility visibility, Class<?> type, boolean _static, boolean _final) {
+		super(name, visibility, type, _static, _final);
 		parameters = new Vector<>();
+		_constructor = false;
 	}
 	
 	public void addParameter(String parameter) {
@@ -23,6 +26,10 @@ public class UMLOperation extends UMLProperty {
 
 	public List<String> getParameters() {
 		return parameters;
+	}
+	
+	public boolean isConstructor() {
+		return _constructor;
 	}
 	
 	@Override

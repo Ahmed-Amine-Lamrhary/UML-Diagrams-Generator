@@ -25,4 +25,8 @@ public abstract class UMLClassifier {
 	public String getSimpleName() {
 		return simpleName;
 	}
+	
+	public String getName() {
+		return name;
+	}
 }

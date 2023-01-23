@@ -1,19 +1,17 @@
 package org.mql.java.examples;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
+import org.mql.java.dom.ProjectDOMParser;
+import org.mql.java.models.Project;
 import org.mql.java.parsers.ProjectParser;
 import org.mql.java.ui.swing.uml.JProject;
-import org.mql.java.ui.swing.uml.Movable;
 
 public class Main extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -58,18 +56,19 @@ public class Main extends JFrame {
 	
 	void exp02(String binPath) {
 		try {
-			ProjectParser projectParser = new ProjectParser(binPath);
+			new ProjectParser(binPath);
 			
-			JProject jProject = new JProject(projectParser.getProject());
+			new ProjectDOMParser();
+			
+			JProject jProject = new JProject(Project.getInstance());
 			JScrollPane panelPane = new JScrollPane();
 			panelPane.getViewport().add((JPanel) jProject.draw());
-			
-			panelPane.setSize(new Dimension(1000, 1000));
 			
 			setContentPane(panelPane);
 			
 			config();
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.warning(e.getMessage());
 		}
 		

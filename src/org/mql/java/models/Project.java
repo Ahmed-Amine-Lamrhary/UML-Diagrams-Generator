@@ -20,6 +20,7 @@ public class Project {
 	private Project() {
 		super();
 		this.packages = new Vector<>();
+		this.relations = new Vector<>();
 	}
 
 	public String getName() {
@@ -34,12 +35,12 @@ public class Project {
 		return packages;
 	}
 	
-	public void setPackages(List<UMLPackage> packages) {
-		this.packages = packages;
-	}
-	
 	public void addPackage(UMLPackage pUmlPackage) {
 		this.packages.add(pUmlPackage);
+	}
+	
+	public List<UMLRelation> getRelations() {
+		return relations;
 	}
 	
 	@Override

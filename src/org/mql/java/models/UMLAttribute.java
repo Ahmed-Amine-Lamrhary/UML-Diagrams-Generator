@@ -4,8 +4,8 @@ import org.mql.java.enums.Visibility;
 
 public class UMLAttribute extends UMLProperty {
 	
-	public UMLAttribute(String name, Visibility visibility, Class<?> type, boolean _static) {
-		super(name, visibility, type, _static);
+	public UMLAttribute(String name, Visibility visibility, Class<?> type, boolean _static, boolean _final) {
+		super(name, visibility, type, _static, _final);
 	}
 
 	@Override
