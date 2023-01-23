@@ -4,7 +4,6 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
@@ -49,8 +48,7 @@ public class Main extends JFrame {
 	
 	private void drawProject() {
 		if (project != null) {
-			JProject jProject = new JProject(project);
-			JScrollPane panelPane = new JScrollPane((JPanel) jProject.draw());
+			JScrollPane panelPane = new JScrollPane(new JProject(project));
 			setContentPane(panelPane);
 		}
 	}

@@ -33,6 +33,27 @@ public class JUMLClassifier extends BoxPanel implements Movable {
 	
 	public JUMLClassifier(UMLClassifier classifier) {
 		this(classifier, Color.BLACK);
+		
+		drawTitlePanel();
+		
+		if (classifier instanceof UMLEnum) {
+			drawConstantsPanel();
+		} else {
+			drawAttributesPanel();
+			drawOperationsPanel();			
+		}
+		
+		if (classifier instanceof UMLInterface) {
+			setBackground(new Color(184, 249, 168));			
+		}
+		else if (classifier instanceof UMLEnum) {
+			setBackground(new Color(209, 166, 253));
+		}
+		else {
+			setBackground(Color.white);
+		}
+		
+		setSize(getPreferredSize());
 	}
 	
 	private class CustomMouseListener implements MouseListener {
@@ -155,31 +176,10 @@ public class JUMLClassifier extends BoxPanel implements Movable {
 		}
 	}
 	
-	@Override
-	public Object draw() {
-		drawTitlePanel();
-		
-		if (classifier instanceof UMLEnum) {
-			drawConstantsPanel();
-		} else {
-			drawAttributesPanel();
-			drawOperationsPanel();			
-		}
-		
-		if (classifier instanceof UMLInterface) {
-			setBackground(new Color(184, 249, 168));			
-		}
-		else if (classifier instanceof UMLEnum) {
-			setBackground(new Color(209, 166, 253));
-		}
-		else {
-			setBackground(Color.white);
-		}
-		
-		setSize(getPreferredSize());
-		return this;
+	public UMLClassifier getClassifier() {
+		return classifier;
 	}
-
+	
 	@Override
 	public void move(MouseEvent e) {
 		setLocation((getX() + e.getX() - eX), (getY() + e.getY() - eY));

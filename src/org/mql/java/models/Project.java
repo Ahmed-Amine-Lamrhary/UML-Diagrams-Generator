@@ -35,12 +35,28 @@ public class Project {
 		return packages;
 	}
 	
-	public void addPackage(UMLPackage pUmlPackage) {
-		this.packages.add(pUmlPackage);
+	public void addPackage(UMLPackage umlPackage) {
+		packages.add(umlPackage);
+	}
+	
+	public void addRelation(UMLRelation relation) {
+		relations.add(relation);
 	}
 	
 	public List<UMLRelation> getRelations() {
 		return relations;
+	}
+	
+	public List<UMLClassifier> getClassifiers() {
+		List<UMLClassifier> classifiers = new Vector<>();
+		
+		for (UMLPackage umlPackage : packages) {
+			for (UMLClassifier umlClassifier : umlPackage.getClassifiers()) {
+				classifiers.add(umlClassifier);
+			}
+		}
+		
+		return classifiers;
 	}
 	
 	@Override

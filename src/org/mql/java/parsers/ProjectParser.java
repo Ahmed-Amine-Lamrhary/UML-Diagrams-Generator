@@ -5,8 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.mql.java.enums.RelationType;
 import org.mql.java.models.Project;
+import org.mql.java.models.UMLClassifier;
 import org.mql.java.models.UMLPackage;
+import org.mql.java.models.UMLRelation;
 
 public class ProjectParser implements Parser {
 	private Logger logger = Logger.getLogger(getClass().getName());
@@ -52,6 +55,18 @@ public class ProjectParser implements Parser {
 
 	private void detectRelations() {
 		logger.info("Detecting relations...");
+		/*
+		for (UMLClassifier classifier : project.getClassifiers()) {
+			project.addRelation(new UMLRelation(null, null, null));
+		}
+		*/
+		
+		project.addRelation(new UMLRelation(
+				project.getClassifiers().get(0),
+				project.getClassifiers().get(1),
+				RelationType.AGGREGATION
+			)
+		);
 		
 		logger.info("Relations detection end");
 	}

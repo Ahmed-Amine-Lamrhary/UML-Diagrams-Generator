@@ -2,7 +2,7 @@ package org.mql.java.enums;
 
 public enum RelationType {
 	ASSOCIATION("_____"),
-	INHERITANCE("___|>"),
+	GENERALIZATION("___|>"),
 	REALIZATION("---|>"),
 	DEPENDENCY("----->"),
 	AGGREGATION("---<>"),

@@ -10,7 +10,7 @@ import org.mql.java.models.UMLOperation;
 import org.mql.java.models.UMLProperty;
 import org.mql.java.ui.swing.Label;
 
-public class JUMLMember extends JPanel implements Drawable {
+public class JUMLMember extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	protected UMLMember umlCharacteristic;
@@ -49,10 +49,5 @@ public class JUMLMember extends JPanel implements Drawable {
 		}
 
 		add(signatureLabel);
-	}
-
-	@Override
-	public Object draw() {
-		return this;
 	}
 }

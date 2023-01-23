@@ -2,8 +2,8 @@ package org.mql.java.models;
 
 public class UMLInterface extends UMLModel {
 
-	public UMLInterface(String name, String simpleName) {
-		super(name, simpleName);
+	public UMLInterface(String name, String simpleName, String motherModelName) {
+		super(name, simpleName, motherModelName);
 	}
 
 	@Override

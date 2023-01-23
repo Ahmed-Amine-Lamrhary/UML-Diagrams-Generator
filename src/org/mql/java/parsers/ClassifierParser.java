@@ -125,14 +125,19 @@ public class ClassifierParser implements Parser {
 			ClasseLoader loader = new ClasseLoader(binPath);
 			clazz = loader.loadClass(classifierName);
 			
+			String motherModelName = clazz.getSuperclass().getName();
+			
 			if (clazz.isInterface()) {
-				classifier = new UMLInterface(clazz.getName(), clazz.getSimpleName());
+				classifier = new UMLInterface(clazz.getName(), clazz.getSimpleName(), motherModelName);
 			}
 			else if (clazz.isEnum()) {
 				classifier = new UMLEnum(clazz.getName(), clazz.getSimpleName());
 			}
 			else {
-				classifier = new UMLClass(clazz.getName(), clazz.getSimpleName(), isAbstract(clazz.getModifiers()));
+				classifier = new UMLClass(clazz.getName(), clazz.getSimpleName(), isAbstract(clazz.getModifiers()), motherModelName);
+				for (Class<?> interfaceClass : clazz.getInterfaces()) {
+					((UMLClass) classifier).addImplementedInterface(interfaceClass.getName());
+				}
 			}
 			
 			if (!(classifier instanceof UMLEnum)) {
