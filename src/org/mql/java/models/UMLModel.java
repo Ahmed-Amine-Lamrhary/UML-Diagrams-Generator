@@ -11,4 +11,9 @@ public abstract class UMLModel extends UMLClassifier {
 	public String getMotherModelName() {
 		return motherModelName;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 }

@@ -29,4 +29,15 @@ public abstract class UMLClassifier {
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public String toString() {
+		String out = simpleName + "\n";
+		
+		for (UMLMember member : umlMembers) {
+			out += "\t" + member + "\n";
+		}
+				
+		return out;
+	}
 }

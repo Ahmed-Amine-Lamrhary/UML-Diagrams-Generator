@@ -26,9 +26,7 @@ public class UMLPackage {
 
 	@Override
 	public String toString() {
-		String out = "";
-		
-		out += "Package : " + name + "\n";
+		String out = "Package : " + name + "\n";
 		
 		for (UMLClassifier c : classifiers) {
 			out += "\t" + c + "\n";

@@ -28,6 +28,6 @@ public class UMLRelation {
 
 	@Override
 	public String toString() {
-		return child.getName() + type.getSymbol() + parent.getName();
+		return child.getName() + " " + type.getSymbol() + " " + parent.getName();
 	}
 }

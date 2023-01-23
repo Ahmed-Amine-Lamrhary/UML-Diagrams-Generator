@@ -125,7 +125,7 @@ public class ClassifierParser implements Parser {
 			ClasseLoader loader = new ClasseLoader(binPath);
 			clazz = loader.loadClass(classifierName);
 			
-			String motherModelName = clazz.getSuperclass().getName();
+			String motherModelName = clazz.getSuperclass() != null ? clazz.getSuperclass().getName() : "";
 			
 			if (clazz.isInterface()) {
 				classifier = new UMLInterface(clazz.getName(), clazz.getSimpleName(), motherModelName);

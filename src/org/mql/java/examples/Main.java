@@ -27,7 +27,8 @@ public class Main extends JFrame {
 			
 		}
 		
-		exp02(binPath);
+		exp01(binPath);
+		// exp02(binPath);
 	}
 	
 	private void config() {
@@ -56,7 +57,9 @@ public class Main extends JFrame {
 	void exp01(String binPath) {
 		try {
 			ProjectParser projectParser = new ProjectParser(binPath);
-			logger.info(projectParser.getProject().toString());
+			System.out.println(projectParser.getProject());
+			
+			// logger.info(projectParser.getProject().toString());
 		} catch (Exception e) {
 			logger.severe(e.getMessage());
 		}

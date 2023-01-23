@@ -39,24 +39,26 @@ public class Project {
 		packages.add(umlPackage);
 	}
 	
-	public void addRelation(UMLRelation relation) {
-		relations.add(relation);
+	public void addRelations(List<UMLRelation> relations) {
+		this.relations.addAll(relations);
 	}
 	
 	public List<UMLRelation> getRelations() {
 		return relations;
 	}
 	
-	public List<UMLClassifier> getClassifiers() {
-		List<UMLClassifier> classifiers = new Vector<>();
+	public List<UMLModel> getModels() {
+		List<UMLModel> models = new Vector<>();
 		
 		for (UMLPackage umlPackage : packages) {
 			for (UMLClassifier umlClassifier : umlPackage.getClassifiers()) {
-				classifiers.add(umlClassifier);
+				if (umlClassifier instanceof UMLModel) {
+					models.add((UMLModel) umlClassifier);
+				}
 			}
 		}
 		
-		return classifiers;
+		return models;
 	}
 	
 	@Override
@@ -65,7 +67,11 @@ public class Project {
 		out += "-".repeat(out.length()) + "\n";
 
 		for (UMLPackage umlPackage : packages) {
-			out += umlPackage;
+			out += umlPackage + "\n";
+		}
+				
+		for (UMLRelation umlRelation : relations) {
+			out += umlRelation + "\n";
 		}
 		
 		return out;

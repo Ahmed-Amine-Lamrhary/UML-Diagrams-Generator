@@ -2,6 +2,7 @@ package org.mql.java.relations;
 
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.mql.java.enums.RelationType;
 import org.mql.java.models.UMLAttribute;
@@ -10,44 +11,54 @@ import org.mql.java.models.UMLInterface;
 import org.mql.java.models.UMLMember;
 import org.mql.java.models.UMLModel;
 import org.mql.java.models.UMLOperation;
-import org.mql.java.models.UMLProperty;
 import org.mql.java.models.UMLRelation;
 import org.mql.java.utils.ReflectionUtils;
 
 public class RelationDetector {
+	private static Logger logger = Logger.getLogger(RelationDetector.class.getName());
 	
-	public RelationDetector() {
+	public List<UMLRelation> parse(UMLModel parent, UMLModel child) {
 
-	}
-	
-	public List<UMLRelation> parse(UMLModel parent, UMLModel child) {		
 		if (parent != null && child != null) {
+			logger.info("detecting relation between " + parent.getSimpleName() + " and " + child.getSimpleName());
 			List<UMLRelation> relations = new Vector<>();
 			
 			if (!parent.equals(child)) {
 				UMLRelation dependency = detectDependency(parent, child);
-				if (dependency != null)
+				if (dependency != null) {
+					logger.info("found dependency between " + parent.getSimpleName() + " and " + child.getSimpleName());					
 					relations.add(dependency);
+				}
 				
 				UMLRelation association = detectAssociation(parent, child);
-				if (association != null)
+				if (association != null) {
+					logger.info("found association between " + parent.getSimpleName() + " and " + child.getSimpleName());										
 					relations.add(association);
+				}
 				
 				UMLRelation aggregation = detectAggregation(parent, child, "");
-				if (aggregation != null)
+				if (aggregation != null) {
+					logger.info("found aggregation between " + parent.getSimpleName() + " and " + child.getSimpleName());										
 					relations.add(aggregation);
+				}
 				
 				UMLRelation composition = detectComposition(parent, child);
-				if (composition != null)
+				if (composition != null) {
+					logger.info("found composition between " + parent.getSimpleName() + " and " + child.getSimpleName());										
 					relations.add(composition);
+				}
 				
 				UMLRelation realization = detectRealization(parent, child);
-				if (realization != null)
+				if (realization != null) {
+					logger.info("found realization between " + parent.getSimpleName() + " and " + child.getSimpleName());										
 					relations.add(realization);
+				}
 				
 				UMLRelation generalization = detectGeneralization(parent, child);
-				if (generalization != null)
+				if (generalization != null) {
+					logger.info("found generalization between " + parent.getSimpleName() + " and " + child.getSimpleName());										
 					relations.add(generalization);
+				}
 			}
 			
 			return relations;
