@@ -22,21 +22,7 @@ public class XMLNode {
 	
 	public XMLNode(String name, Document document) {
 		this.document = document;
-		this.node = document.createElement(name);
-	}
-	
-	public XMLNode(String name) {
-		try {
-			if (document == null) {
-				DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
-				DocumentBuilder builder = factory.newDocumentBuilder();
-				document = builder.newDocument();
-			}
-			
-			this.node = document.createElement(name);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.node = this.document.createElement(name);
 	}
 	
 	public XMLNode(Node node, Document document) {
@@ -45,9 +31,7 @@ public class XMLNode {
 		this.node = node;
 	}
 	
-	public XMLNode() {
-		String source = "";
-		
+	public XMLNode(File source) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
 		
 		try {
@@ -111,6 +95,7 @@ public class XMLNode {
 	
 	public String getAttribute(String name) {
 		NamedNodeMap atts = node.getAttributes();
+		if (atts.getNamedItem(name) == null) return null;
 		return atts.getNamedItem(name).getNodeValue();
 	}
 
@@ -121,6 +106,12 @@ public class XMLNode {
 		} catch(Exception e) {
 			return -1;
 		}
+	}
+	
+	public boolean getBooleanAttribute(String name) {
+		NamedNodeMap atts = node.getAttributes();
+		String value = atts.getNamedItem(name).getNodeValue();
+		return value.equals("true");
 	}
 	
 	public void appendChild(XMLNode newNode) {
@@ -167,10 +158,7 @@ public class XMLNode {
 		return document;
 	}
 	
-	public void persist() throws Exception {
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()
-				+ "\\project-dom.xml";
-		
+	public void persist(String path) throws Exception {
 		File file = new File(path);
 		
 		if (!file.exists()) {

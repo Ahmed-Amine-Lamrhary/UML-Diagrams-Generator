@@ -16,6 +16,8 @@ import org.mql.java.ui.swing.uml.JProject;
 public class Main extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(getClass().getName());
+	
+	private Project project;
 
 	public Main(String binPath) {
 		configLogger();
@@ -45,6 +47,14 @@ public class Main extends JFrame {
 		}
 	}
 	
+	private void drawProject() {
+		if (project != null) {
+			JProject jProject = new JProject(project);
+			JScrollPane panelPane = new JScrollPane((JPanel) jProject.draw());
+			setContentPane(panelPane);
+		}
+	}
+	
 	void exp01(String binPath) {
 		try {
 			ProjectParser projectParser = new ProjectParser(binPath);
@@ -56,15 +66,15 @@ public class Main extends JFrame {
 	
 	void exp02(String binPath) {
 		try {
-			new ProjectParser(binPath);
+			ProjectParser projectParser = new ProjectParser(binPath);
+			project = projectParser.getProject();
 			
-			new ProjectDOMParser();
+			ProjectDOMParser projectDOMParser = new ProjectDOMParser();
+			// projectDOMParser.parse(new File("bin/project-dom.xml"));
+			// Project project = projectDOMParser.getProject();
+			projectDOMParser.persist();
 			
-			JProject jProject = new JProject(Project.getInstance());
-			JScrollPane panelPane = new JScrollPane();
-			panelPane.getViewport().add((JPanel) jProject.draw());
-			
-			setContentPane(panelPane);
+			drawProject();
 			
 			config();
 		} catch (Exception e) {
@@ -75,6 +85,8 @@ public class Main extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new Main(args[0]);
+		if (args.length == 1) {
+			new Main(args[0]);
+		}
 	}
 }

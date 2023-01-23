@@ -68,7 +68,7 @@ public class ClassifierParser implements Parser {
 		
 		if (member instanceof Field) {
 			Class<?> type = ((Field) member).getType();
-			classifier.addUMLMember(new UMLAttribute(name, visibility, type, isStatic(modifiers), isFinal(modifiers)));
+			classifier.addUMLMember(new UMLAttribute(name, visibility, type.getName(), type.getSimpleName(), isStatic(modifiers), isFinal(modifiers)));
 		}
 		else {
 			UMLOperation umlOperation;
@@ -78,7 +78,7 @@ public class ClassifierParser implements Parser {
 			}
 			else {
 				Class<?> type = ((Method) member).getReturnType();
-				umlOperation = new UMLOperation(name, visibility, type, isStatic(modifiers), isFinal(modifiers));
+				umlOperation = new UMLOperation(name, visibility, type.getName(), type.getSimpleName(), isStatic(modifiers), isFinal(modifiers), false);
 			}			
 
 			for (Parameter p : ((Executable) member).getParameters()) {

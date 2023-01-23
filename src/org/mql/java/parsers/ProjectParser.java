@@ -41,7 +41,7 @@ public class ProjectParser implements Parser {
 		try {
 			for (File packageFile : packagesList) {
 				UMLPackage p = new PackageParser(packageFile).getUmlPackage();
-				project.addPackage(p);				
+				project.addPackage(p);
 			}
 			
 			logger.info("Packages loaded");
@@ -50,7 +50,7 @@ public class ProjectParser implements Parser {
 		}
 	}
 
-	private void parseRelations() {
+	private void detectRelations() {
 		logger.info("Detecting relations...");
 		
 		logger.info("Relations detection end");
@@ -67,10 +67,9 @@ public class ProjectParser implements Parser {
 
 		try {
 			parsePackages();
-			parseRelations();
+			detectRelations();
 		} catch (Exception e) {
 			throw e;
 		}
-
 	}
 }
