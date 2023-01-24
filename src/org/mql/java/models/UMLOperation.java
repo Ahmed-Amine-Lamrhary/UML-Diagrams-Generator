@@ -45,8 +45,8 @@ public class UMLOperation extends UMLProperty {
 		
 		out += ")";
 		
-		if (type != null)
-			out += " : " + type;
+		if (getSimpleType() != null)
+			out += " : " + getSimpleType();
 		
 		return out;
 	}

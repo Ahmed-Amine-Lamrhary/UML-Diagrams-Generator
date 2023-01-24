@@ -40,4 +40,21 @@ public abstract class UMLProperty extends UMLMember {
 	public boolean isFinal() {
 		return _final;
 	}
+	
+	@Override
+	public String toString() {
+		String out = "";
+		
+		if (visibility != null)
+			out += visibility.getSymbol() + " ";
+		
+		out += name;
+		
+		if (getSimpleType() != null) {
+			out += " : ";
+			out += getSimpleType();
+		}
+		
+		return out;
+	}
 }
