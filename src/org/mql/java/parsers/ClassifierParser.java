@@ -11,6 +11,7 @@ import java.lang.reflect.Parameter;
 import java.util.logging.Logger;
 
 import org.mql.java.enums.Visibility;
+import org.mql.java.models.Multiplicity;
 import org.mql.java.models.UMLAttribute;
 import org.mql.java.models.UMLClass;
 import org.mql.java.models.UMLClassifier;
@@ -18,7 +19,9 @@ import org.mql.java.models.UMLConstant;
 import org.mql.java.models.UMLEnum;
 import org.mql.java.models.UMLInterface;
 import org.mql.java.models.UMLOperation;
+import org.mql.java.models.UMLParameter;
 import org.mql.java.utils.ClasseLoader;
+import org.mql.java.utils.ReflectionUtils;
 import org.mql.java.utils.StringResolver;
 
 public class ClassifierParser implements Parser {
@@ -65,28 +68,38 @@ public class ClassifierParser implements Parser {
 		int modifiers = member.getModifiers();
 		Visibility visibility = getVisibility(modifiers);
 		String name = member instanceof Constructor ? clazz.getSimpleName() : member.getName();
-		
-		if (member instanceof Field) {
-			Class<?> type = ((Field) member).getType();
-			classifier.addUMLMember(new UMLAttribute(name, visibility, type.getName(), type.getSimpleName(), isStatic(modifiers), isFinal(modifiers)));
-		}
-		else {
-			UMLOperation umlOperation;
-			
-			if (member instanceof Constructor) {
-				umlOperation = new UMLOperation(name, visibility);
+				
+		if (!member.getName().contains("$")) {
+			if (member instanceof Field) {
+				String type = ((Field) member).getGenericType().getTypeName();
+				Multiplicity multiplicity = new Multiplicity();
+				if (ReflectionUtils.isIterable((Field) member)) {
+					multiplicity.setUpperBound('n');
+				}
+				
+				UMLAttribute attribute = new UMLAttribute(name, visibility, type, isStatic(modifiers), isFinal(modifiers));
+				attribute.setMultiplicity(multiplicity);
+				classifier.addUMLMember(attribute);				
 			}
 			else {
-				Class<?> type = ((Method) member).getReturnType();
-				umlOperation = new UMLOperation(name, visibility, type.getName(), type.getSimpleName(), isStatic(modifiers), isFinal(modifiers), false);
-			}			
-
-			for (Parameter p : ((Executable) member).getParameters()) {
-				umlOperation.addParameter(p.getType().getSimpleName());
+				UMLOperation umlOperation;
+				
+				if (member instanceof Constructor) {
+					umlOperation = new UMLOperation(name, visibility);
+				}
+				else {
+					String type = ((Method) member).getGenericReturnType().getTypeName();
+					umlOperation = new UMLOperation(name, visibility, type, isStatic(modifiers), isFinal(modifiers), false);
+				}			
+				
+				for (Parameter p : ((Executable) member).getParameters()) {
+					String pType = p.getParameterizedType().getTypeName();
+					umlOperation.addParameter(new UMLParameter(pType));
+				}
+				
+				classifier.addUMLMember(umlOperation);
 			}
-			
-			classifier.addUMLMember(umlOperation);
-		}				
+		}
 	}
 	
 	private void loadUMLAttributes() {		

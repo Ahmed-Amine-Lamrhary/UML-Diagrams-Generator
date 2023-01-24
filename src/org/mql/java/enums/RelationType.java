@@ -6,7 +6,7 @@ public enum RelationType {
 	REALIZATION("---|>"),
 	DEPENDENCY("----->"),
 	AGGREGATION("---<>"),
-	COMPOSITION("----*");
+	COMPOSITION("---*");
 	
 	private String symbol;
 	

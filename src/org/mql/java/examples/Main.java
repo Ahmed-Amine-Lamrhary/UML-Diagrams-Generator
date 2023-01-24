@@ -1,5 +1,6 @@
 package org.mql.java.examples;
 
+import java.io.File;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -16,8 +17,6 @@ public class Main extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Logger logger = Logger.getLogger(getClass().getName());
 	
-	private Project project;
-
 	public Main(String binPath) {
 		configLogger();
 		
@@ -27,8 +26,8 @@ public class Main extends JFrame {
 			
 		}
 		
-		exp01(binPath);
-		// exp02(binPath);
+		// exp01(binPath);
+		exp02(binPath);
 	}
 	
 	private void config() {
@@ -47,7 +46,7 @@ public class Main extends JFrame {
 		}
 	}
 	
-	private void drawProject() {
+	private void drawProject(Project project) {
 		if (project != null) {
 			JScrollPane panelPane = new JScrollPane(new JProject(project));
 			setContentPane(panelPane);
@@ -68,14 +67,14 @@ public class Main extends JFrame {
 	void exp02(String binPath) {
 		try {
 			ProjectParser projectParser = new ProjectParser(binPath);
-			project = projectParser.getProject();
+			Project project = projectParser.getProject();
 			
 			ProjectDOMParser projectDOMParser = new ProjectDOMParser();
 			// projectDOMParser.parse(new File("bin/project-dom.xml"));
 			// Project project = projectDOMParser.getProject();
-			projectDOMParser.persist();
+			projectDOMParser.persist(project);
 			
-			drawProject();
+			drawProject(project);
 			
 			config();
 		} catch (Exception e) {

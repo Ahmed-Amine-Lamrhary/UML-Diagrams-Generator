@@ -1,34 +1,35 @@
+/**
+ * 
+ */
 package org.mql.java.utils;
 
-import org.mql.java.models.UMLAttribute;
-import org.mql.java.models.UMLClass;
-import org.mql.java.models.UMLMember;
-import org.mql.java.models.UMLOperation;
+import java.lang.reflect.Field;
 
+/**
+ * @author Amine Lamrhary
+ *
+ * Jan 23, 2023
+ */
 public class ReflectionUtils {
+		
+	public static boolean isIterable(Field field) {		
+		return field.getType().isArray() 
+		|| field.getType().getName().contains("Iterable")
+		|| field.getType().getName().contains("Collection") 
+		|| field.getType().getName().contains("List")
+		|| field.getType().getName().contains("ArrayList")
+		|| field.getType().getName().contains("LinkedList")
+		|| field.getType().getName().contains("Vector")
+		|| field.getType().getName().contains("Stack")
+		|| field.getType().getName().contains("Queue")
+		|| field.getType().getName().contains("PriorityQueue")
+		|| field.getType().getName().contains("Deque")
+		|| field.getType().getName().contains("ArrayDeque")
+		|| field.getType().getName().contains("Set")
+		|| field.getType().getName().contains("HashSet")
+		|| field.getType().getName().contains("LinkedHashSet")
+		|| field.getType().getName().contains("SortedSet")
+		|| field.getType().getName().contains("TreeSet");
+	}
 
-	public static boolean isOperationParameter(String parameterTypeName, UMLOperation operation) {
-		for (String paramTypeName : operation.getParameters()) {
-			if (paramTypeName.equals(parameterTypeName))
-				return true;
-		}
-		
-		return false;
-	}
-	
-	public static boolean isClassAttribute(UMLClass umlClass, UMLAttribute attribute) {
-		for (UMLMember member : umlClass.getUmlMembers()) {
-			if (member instanceof UMLAttribute) {
-				UMLAttribute localAttribute = (UMLAttribute) member;
-				if (localAttribute.getName().equals(attribute))
-					return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	public static boolean isFinalClassAttribute(UMLClass umlClass, UMLAttribute attribute) {
-		return (isClassAttribute(umlClass, attribute) && attribute.isFinal());
-	}
 }

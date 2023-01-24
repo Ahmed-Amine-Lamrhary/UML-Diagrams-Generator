@@ -5,11 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.mql.java.enums.RelationType;
 import org.mql.java.models.Project;
 import org.mql.java.models.UMLModel;
 import org.mql.java.models.UMLPackage;
-import org.mql.java.models.UMLRelation;
 import org.mql.java.relations.RelationDetector;
 
 public class ProjectParser implements Parser {
@@ -27,7 +25,7 @@ public class ProjectParser implements Parser {
 
 	private void loadPackagesFiles(File directory) {
 		for (File file : directory.listFiles()) {
-			if (file.isFile()) {
+			if (file.isFile() && file.getName().endsWith(".class")) {
 				packagesList.add(file.getParentFile());
 			} else if (file.isDirectory()) {
 				loadPackagesFiles(file);
@@ -71,11 +69,12 @@ public class ProjectParser implements Parser {
 	@Override
 	public void parse(File file) throws Exception {
 		if (!file.exists()) throw new Exception("Project not found");
+
+		String projectName = file.getAbsolutePath().replace("\\bin", "").substring(file.getAbsolutePath().replace("\\bin", "").lastIndexOf("\\") + 1);
+		
+		project = Project.getInstance(projectName);
 		
 		loadPackagesFiles(file);
-
-		project = Project.getInstance();
-		project.setName(file.getAbsolutePath());
 
 		try {
 			parsePackages();

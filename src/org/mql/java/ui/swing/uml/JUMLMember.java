@@ -13,12 +13,12 @@ import org.mql.java.ui.swing.Label;
 public class JUMLMember extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	protected UMLMember umlCharacteristic;
+	protected UMLMember umlMember;
 	
 	protected Label signatureLabel;
 	
 	public JUMLMember(UMLMember umlCharacteristic) {
-		this.umlCharacteristic = umlCharacteristic;
+		this.umlMember = umlCharacteristic;
 		
 		setOpaque(false);
 		setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -40,7 +40,16 @@ public class JUMLMember extends JPanel {
 			
 			if (property instanceof UMLOperation) {
 				UMLOperation operation = (UMLOperation) property;
-				signatureLabel.addText("(" + String.join(",", operation.getParameters()) + ")");
+				signatureLabel.addText("(");
+				
+				for (int i = 0; i < operation.getParameters().size(); i++) {
+					signatureLabel.addText(operation.getParameters().get(i).getSimpleType());
+					if (i < operation.getParameters().size()-1) {
+						signatureLabel.addText(", ");
+					}
+				}
+
+				signatureLabel.addText(")");
 			}
 			
 			if (property.getSimpleType() != null) {

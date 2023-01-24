@@ -22,7 +22,7 @@ public class JUMLRelation extends JPanel implements Movable {
 		this.jProject = jProject;
 		
 		// setOpaque(false);
-		setBackground(Color.red);
+		// setBackground(Color.red);
 		setSize(500, 500);
 		drawRelation();
 	}

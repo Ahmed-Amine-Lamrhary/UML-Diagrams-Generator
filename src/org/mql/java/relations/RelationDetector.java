@@ -12,72 +12,74 @@ import org.mql.java.models.UMLMember;
 import org.mql.java.models.UMLModel;
 import org.mql.java.models.UMLOperation;
 import org.mql.java.models.UMLRelation;
-import org.mql.java.utils.ReflectionUtils;
+import org.mql.java.utils.RelationUtils;
 
 public class RelationDetector {
 	private static Logger logger = Logger.getLogger(RelationDetector.class.getName());
 	
-	public List<UMLRelation> parse(UMLModel parent, UMLModel child) {
+	public List<UMLRelation> parse(UMLModel child, UMLModel parent) {
 
-		if (parent != null && child != null) {
-			logger.info("detecting relation between " + parent.getSimpleName() + " and " + child.getSimpleName());
+		if (child != null && parent != null) {
 			List<UMLRelation> relations = new Vector<>();
 			
-			if (!parent.equals(child)) {
-				UMLRelation dependency = detectDependency(parent, child);
+			if (!child.equals(parent)) {
+				UMLRelation dependency = detectDependency(child, parent);
 				if (dependency != null) {
-					logger.info("found dependency between " + parent.getSimpleName() + " and " + child.getSimpleName());					
+					logRelation("dependency", child, parent);
 					relations.add(dependency);
 				}
 				
-				UMLRelation association = detectAssociation(parent, child);
+				UMLRelation association = detectAssociation(child, parent);
 				if (association != null) {
-					logger.info("found association between " + parent.getSimpleName() + " and " + child.getSimpleName());										
+					logRelation("association", child, parent);
+					relations.remove(dependency);
 					relations.add(association);
 				}
 				
-				UMLRelation aggregation = detectAggregation(parent, child, "");
-				if (aggregation != null) {
-					logger.info("found aggregation between " + parent.getSimpleName() + " and " + child.getSimpleName());										
-					relations.add(aggregation);
+				UMLRelation aggregation = null;
+				if (association != null) {
+					aggregation = detectAggregation(child, parent);
+					if (aggregation != null) {
+						logRelation("aggregation", child, parent);
+						relations.remove(association);
+						relations.add(aggregation);
+					}					
 				}
 				
-				UMLRelation composition = detectComposition(parent, child);
+				UMLRelation composition = detectComposition(child, parent);
 				if (composition != null) {
-					logger.info("found composition between " + parent.getSimpleName() + " and " + child.getSimpleName());										
+					logRelation("composition", child, parent);
+					relations.remove(aggregation);
 					relations.add(composition);
 				}
 				
-				UMLRelation realization = detectRealization(parent, child);
+				UMLRelation realization = detectRealization(child, parent);
 				if (realization != null) {
-					logger.info("found realization between " + parent.getSimpleName() + " and " + child.getSimpleName());										
+					logRelation("realization", child, parent);
 					relations.add(realization);
 				}
 				
-				UMLRelation generalization = detectGeneralization(parent, child);
+				UMLRelation generalization = detectGeneralization(child, parent);
 				if (generalization != null) {
-					logger.info("found generalization between " + parent.getSimpleName() + " and " + child.getSimpleName());										
+					logRelation("generalization", child, parent);
 					relations.add(generalization);
 				}
 			}
 			
 			return relations;
 		}
+		
 		return null;
 	}
 	
-	private UMLRelation detectDependency(UMLModel parent, UMLModel child) {
+	private UMLRelation detectDependency(UMLModel child, UMLModel parent) {
 		UMLRelation dependency = null;
 		
 		for (UMLMember member : parent.getUmlMembers()) {
 			if (member instanceof UMLOperation) {
 				UMLOperation operation = (UMLOperation) member;
-				if (!operation.isConstructor()) {
-					for (String parameter : operation.getParameters()) {
-						if (ReflectionUtils.isOperationParameter(parameter, operation)) {
-							dependency = new UMLRelation(parent, child, RelationType.DEPENDENCY);
-						}
-					}
+				if (RelationUtils.isMethodParameter(child.getName(), operation)) {
+					dependency = new UMLRelation(child, parent, RelationType.DEPENDENCY);
 				}
 			}
 		}
@@ -85,91 +87,72 @@ public class RelationDetector {
 		return dependency;
 	}
 	
-	private UMLRelation detectAssociation(UMLModel parent, UMLModel child) {
-		UMLRelation association = null;
-		
-		if (parent instanceof UMLClass && child instanceof UMLClass) {
-			for (UMLMember member : parent.getUmlMembers()) {
-				if (member instanceof UMLAttribute) {
-					// found issue
-					if (ReflectionUtils.isClassAttribute((UMLClass) child, (UMLAttribute) member)) {
-						// is class attribute
-						association = new UMLRelation(child, parent, RelationType.ASSOCIATION);
-					}
-				}
+	private UMLRelation detectAssociation(UMLModel child, UMLModel parent) {		
+		if (child instanceof UMLClass && parent instanceof UMLClass) {
+			if (RelationUtils.childInParentAttributes(child, parent) != null) {
+				return new UMLRelation(child, parent, RelationType.ASSOCIATION);
 			}
 		}
 		
-		return association;
+		return null;
 	}
 	
-	private UMLRelation detectAggregation(UMLModel parent, UMLModel child, String parameter) {
-		UMLRelation aggregation = null;
-
-		if (detectAssociation(parent, child) != null) {
-			for (UMLMember member : parent.getUmlMembers()) {
-				if (member instanceof UMLOperation) {
-					UMLOperation operation = (UMLOperation) member;
-					if (operation.isConstructor()) {
-						for (String param : operation.getParameters()) {
-							if (ReflectionUtils.isOperationParameter(param, operation)) {
-								// attribute is operation parameter
-								parameter = param;
-								aggregation = new UMLRelation(parent, child, RelationType.AGGREGATION);
-							}
-						}
-					}
+	private UMLRelation detectAggregation(UMLModel child, UMLModel parent) {
+		if (child instanceof UMLClass && parent instanceof UMLClass) {	
+			UMLAttribute attribute = RelationUtils.childInParentAttributes(child, parent);
+			
+			if (attribute != null && attribute.isMultiple()) {
+				if (RelationUtils.parameterInAtLeastOneConstructor(attribute.getType(), parent)) {
+					return new UMLRelation(child, parent, RelationType.AGGREGATION);
 				}
 			}
 		}
 		
-		return aggregation;
+		return null;
 	}
 	
-	private UMLRelation detectComposition(UMLModel parent, UMLModel child) {
-		UMLRelation composition = null;
-		
-		String parameter = "";
-		
-		if (detectAggregation(parent, child, parameter) != null) {
-			for (UMLMember member : parent.getUmlMembers()) {
-				if (member instanceof UMLAttribute) {
-					if (ReflectionUtils.isFinalClassAttribute((UMLClass) child, (UMLAttribute) member)) {
-						// final attribute and constructor parameter
-						composition = new UMLRelation(child, parent, RelationType.COMPOSITION);
-					}
-				}
-			}
-		}
-		else if (parent.getName().contains(child.getName())) {
+	private UMLRelation detectComposition(UMLModel child, UMLModel parent) {				
+		if (child instanceof UMLClass && parent instanceof UMLClass) {
+			
 			// inner class
-			composition = new UMLRelation(child, parent, RelationType.COMPOSITION);
-		}
-		
-		return composition;
-	}
-	
-	private UMLRelation detectRealization(UMLModel parent, UMLModel child) {
-		UMLRelation realization = null;
-		
-		if (parent instanceof UMLClass && child instanceof UMLInterface) {
-			UMLClass clazz = (UMLClass) parent;
-			if (clazz.getImplementedInterfaces().contains(child.getName())) {
-				realization = new UMLRelation(parent, child, RelationType.REALIZATION);
+			if (child.getName().contains(parent.getName())) {
+				return new UMLRelation(child, parent, RelationType.COMPOSITION);
+			}
+			else {
+				UMLAttribute attribute = RelationUtils.childInParentAttributes(child, parent);
+				
+				if (attribute != null && attribute.isMultiple() && attribute.isFinal()) {
+					if (RelationUtils.parameterInAtLeastOneConstructor(attribute.getType(), parent)) {
+						return new UMLRelation(child, parent, RelationType.COMPOSITION);
+					}
+				}
 			}
 		}
 		
-		return realization;
+		return null;
 	}
 	
-	private UMLRelation detectGeneralization(UMLModel parent, UMLModel child) {
-		UMLRelation generalization = null;
-		
-		if (parent.getMotherModelName().equals(child.getName())) {
-			generalization = new UMLRelation(parent, child, RelationType.GENERALIZATION);
+	private UMLRelation detectRealization(UMLModel child, UMLModel parent) {		
+		if (child instanceof UMLClass && parent instanceof UMLInterface) {
+			UMLClass clazz = (UMLClass) child;
+			if (clazz.getImplementedInterfaces().contains(parent.getName())) {
+				return new UMLRelation(child, parent, RelationType.REALIZATION);
+			}
 		}
 		
-		return generalization;
+		return null;
+	}
+	
+	private UMLRelation detectGeneralization(UMLModel child, UMLModel parent) {		
+		if (child.getMotherModelName().equals(parent.getName())) {
+			return new UMLRelation(child, parent, RelationType.GENERALIZATION);
+		}
+		
+		return null;
+	}
+	
+	private void logRelation(String relation, UMLModel child, UMLModel parent) {
+		logger.info("Found " + relation + " between " + child.getSimpleName() + " and " + parent.getSimpleName());
 	}
 }
  

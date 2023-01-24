@@ -3,6 +3,8 @@ package org.mql.java.dom;
 import java.util.List;
 import java.util.Vector;
 
+import javax.xml.XMLConstants;
+
 import org.mql.java.models.Project;
 import org.mql.java.models.UMLAttribute;
 import org.mql.java.models.UMLClass;
@@ -12,6 +14,7 @@ import org.mql.java.models.UMLEnum;
 import org.mql.java.models.UMLMember;
 import org.mql.java.models.UMLOperation;
 import org.mql.java.models.UMLPackage;
+import org.mql.java.models.UMLParameter;
 import org.mql.java.models.UMLProperty;
 import org.mql.java.models.UMLRelation;
 import org.w3c.dom.Document;
@@ -28,6 +31,8 @@ public class ModelMapper {
 			Project project = (Project) model;
 			XMLNode projectNode = new XMLNode("project", document);
 			projectNode.setAttribute("name", project.getName());
+			projectNode.setAttribute("xsi:noNamespaceSchemaLocation", "../resources/schema.xsd");
+			projectNode.setAttribute("xmlns:xsi", XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
 			
 			if (!project.getPackages().isEmpty()) {
 				XMLNode packagesNode = new XMLNode("packages", document);
@@ -149,9 +154,9 @@ public class ModelMapper {
 					
 					if (!umlOperation.getParameters().isEmpty()) {
 						XMLNode parametersNode = new XMLNode("parameters", document);
-						for (String parameter : umlOperation.getParameters()) {
+						for (UMLParameter parameter : umlOperation.getParameters()) {
 							XMLNode parameterNode = new XMLNode("parameter", document);
-							parameterNode.setAttribute("type", parameter);
+							parameterNode.setAttribute("type", parameter.getSimpleType());
 							parametersNode.appendChild(parameterNode);
 						}
 						memberNode.appendChild(parametersNode);					

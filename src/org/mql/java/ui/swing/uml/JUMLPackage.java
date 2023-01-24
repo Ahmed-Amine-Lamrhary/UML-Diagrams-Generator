@@ -17,7 +17,6 @@ import org.mql.java.models.UMLClassifier;
 import org.mql.java.models.UMLPackage;
 import org.mql.java.ui.swing.BoxPanel;
 import org.mql.java.ui.swing.Label;
-import org.mql.java.ui.swing.WrapLayout;
 import org.mql.java.utils.Utils;
 
 public class JUMLPackage extends BoxPanel implements Movable {
@@ -25,18 +24,13 @@ public class JUMLPackage extends BoxPanel implements Movable {
 
 	private UMLPackage umlPackage;
 	private List<JUMLClassifier> jumlClassifiers;
-	
-	private JPanel titlePanel;
-	private JPanel classifiersPanel;
-	
+		
 	private int eX, eY;
 	
 	private class CustomMouseListener implements MouseListener {
 		
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
 		
 		@Override
@@ -57,8 +51,6 @@ public class JUMLPackage extends BoxPanel implements Movable {
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
     }
 	
@@ -87,9 +79,9 @@ public class JUMLPackage extends BoxPanel implements Movable {
 	}
 
 	private void drawClassifiers(int padding) {
-		classifiersPanel = new JPanel(null);
+		JPanel classifiersPanel = new JPanel(null);
 		
-		classifiersPanel.setLayout(new WrapLayout(FlowLayout.LEFT, padding, padding));
+		classifiersPanel.setLayout(new FlowLayout(FlowLayout.LEFT, padding, padding));
 		classifiersPanel.setBorder(new LineBorder(Color.black, 1));
 		classifiersPanel.setBackground(Utils.rgbColor(253, 239, 231));
 		
@@ -106,7 +98,7 @@ public class JUMLPackage extends BoxPanel implements Movable {
 	}
 	
 	private void drawTitle(int padding) {
-		titlePanel = new JPanel();
+		JPanel titlePanel = new JPanel();
 		titlePanel.setOpaque(false);
 		titlePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		titlePanel.setSize(100, 100);
