@@ -70,6 +70,7 @@ Package : org.mql.java.models
 	 	- name : String
 	 	- employees : Employee>
 	 	+ Service(java.lang.String)
+	 	+ Service(java.lang.String, java.util.List<org.mql.java.models.Employee>)
 	 	+ addEmployee(org.mql.java.models.Employee) : void
 
 	Class : Student
@@ -92,7 +93,7 @@ List of relations
 
 org.mql.java.models.Employee ---|> org.mql.java.behaviors.Worker
 org.mql.java.models.Employee ___|> org.mql.java.models.Person
-org.mql.java.models.Employee _____ org.mql.java.models.Service
+org.mql.java.models.Employee ---<> org.mql.java.models.Service
 org.mql.java.models.Manager ___|> org.mql.java.models.Employee
 org.mql.java.models.Student ___|> org.mql.java.models.Person
 org.mql.java.utils.Date _____ org.mql.java.models.Employee
