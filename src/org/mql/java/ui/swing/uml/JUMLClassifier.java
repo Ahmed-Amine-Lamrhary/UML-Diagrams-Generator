@@ -31,44 +31,7 @@ public class JUMLClassifier extends JPanel implements Movable {
 	private SectionPanel operationsPanel;
 	
 	private int eX, eY;
-	
-	private class CustomMouseListener implements MouseListener {
-		
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			
-		}
-		
-		@Override
-		public void mousePressed(MouseEvent e) {
-			eX = e.getX();
-			eY = e.getY();
-		}
-		
-		@Override
-		public void mouseExited(MouseEvent e) {
-		}
-		
-		@Override
-		public void mouseEntered(MouseEvent e) {
-		}
-		
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			
-		}
-    }
-	
-	private class CustomMouseMotionListener implements MouseMotionListener {
-		@Override
-		public void mouseMoved(MouseEvent e) {}
-		
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			move(e);
-		}
-	}
-	
+
 	public JUMLClassifier(UMLClassifier classifier) {
 		this(classifier, Color.BLACK);
 	}
@@ -178,6 +141,44 @@ public class JUMLClassifier extends JPanel implements Movable {
 	
 	public UMLClassifier getClassifier() {
 		return classifier;
+	}
+	
+	
+	private class CustomMouseListener implements MouseListener {
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			
+		}
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			eX = e.getX();
+			eY = e.getY();
+		}
+		
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			
+		}
+    }
+	
+	private class CustomMouseMotionListener implements MouseMotionListener {
+		@Override
+		public void mouseMoved(MouseEvent e) {}
+		
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			move(e);
+		}
 	}
 	
 	@Override
