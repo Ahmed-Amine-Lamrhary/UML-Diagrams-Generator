@@ -14,12 +14,15 @@ Une application qui permet d’extraire l’ensemble des classes et packages d�
 
 # Résultat d'éxecution
 
+## L'interface graphique
+
 Dans l'exemple suivant le diagramme de packages d'un système de gestion d'une école :
 
 ![Screenshot](interface-graphique.png)
 
 ## Résultat du parsing de l'ensemble des entités et leurs relations
 
+```text
 ----------------------------------
 Project : School management system
 ----------------------------------
@@ -96,3 +99,4 @@ org.mql.java.utils.Date _____ org.mql.java.models.Employee
 org.mql.java.utils.Date _____ org.mql.java.models.Person
 org.mql.java.utils.Date _____ org.mql.java.models.Student
 
+```
