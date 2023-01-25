@@ -112,6 +112,7 @@ public class JUMLClassifier extends JPanel implements Movable {
 	
 	private void drawAttributesPanel() {
 		attributesPanel = new SectionPanel();
+		attributesPanel.setBorderBottom(1);
 				
 		for (UMLMember umlMember : classifier.getUmlMembers()) {
 			if (umlMember instanceof UMLAttribute) {
@@ -171,8 +172,6 @@ public class JUMLClassifier extends JPanel implements Movable {
 		private static final long serialVersionUID = 1L;
 		
 		public SectionPanel() {
-			setBorderBottom(1);
-			
 			setOpaque(false);
 		}
 	}
