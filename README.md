@@ -18,6 +18,8 @@ Une application qui permet d’extraire l’ensemble des classes et packages d�
 
 Dans l'exemple suivant le diagramme de packages d'un système de gestion d'une école :
 
+vous pouvez faire glisser les entités.
+
 ![Screenshot](interface-graphique.png)
 
 ## Résultat du parsing de l'ensemble des entités et leurs relations
