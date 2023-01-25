@@ -1,7 +1,7 @@
 package org.mql.java.ui.swing.uml;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -15,11 +15,10 @@ import javax.swing.border.LineBorder;
 
 import org.mql.java.models.UMLClassifier;
 import org.mql.java.models.UMLPackage;
-import org.mql.java.ui.swing.BoxPanel;
 import org.mql.java.ui.swing.Label;
 import org.mql.java.utils.Utils;
 
-public class JUMLPackage extends BoxPanel implements Movable {
+public class JUMLPackage extends JPanel implements Movable {
 	private static final long serialVersionUID = 1L;
 
 	private UMLPackage umlPackage;
@@ -41,12 +40,10 @@ public class JUMLPackage extends BoxPanel implements Movable {
 		
 		@Override
 		public void mouseExited(MouseEvent e) {
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 		
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			setCursor(new Cursor(Cursor.MOVE_CURSOR));
 		}
 		
 		@Override
@@ -67,6 +64,8 @@ public class JUMLPackage extends BoxPanel implements Movable {
 	public JUMLPackage(UMLPackage umlPackage) {
 		this.umlPackage = umlPackage;		
 		jumlClassifiers = new Vector<>();
+		
+		setLayout(new BorderLayout());
 		
 		setOpaque(false);
 		drawTitle(4);
@@ -112,7 +111,7 @@ public class JUMLPackage extends BoxPanel implements Movable {
 		
 		titlePanel.add(p);
 		
-		add(titlePanel);
+		add(titlePanel, BorderLayout.NORTH);
 	}
 	
 	public List<JUMLClassifier> getJumlClassifiers() {

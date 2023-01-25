@@ -1,12 +1,13 @@
 package org.mql.java.ui.swing.uml;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JPanel;
 
 import org.mql.java.models.UMLAttribute;
 import org.mql.java.models.UMLMember;
@@ -18,7 +19,7 @@ import org.mql.java.models.UMLOperation;
 import org.mql.java.ui.swing.BoxPanel;
 import org.mql.java.ui.swing.Label;
 
-public class JUMLClassifier extends BoxPanel implements Movable {
+public class JUMLClassifier extends JPanel implements Movable {
 	private static final long serialVersionUID = 1L;
 
 	private Color color;
@@ -31,9 +32,54 @@ public class JUMLClassifier extends BoxPanel implements Movable {
 	
 	private int eX, eY;
 	
+	private class CustomMouseListener implements MouseListener {
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			
+		}
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			eX = e.getX();
+			eY = e.getY();
+		}
+		
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			
+		}
+    }
+	
+	private class CustomMouseMotionListener implements MouseMotionListener {
+		@Override
+		public void mouseMoved(MouseEvent e) {}
+		
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			move(e);
+		}
+	}
+	
 	public JUMLClassifier(UMLClassifier classifier) {
 		this(classifier, Color.BLACK);
+	}
+	
+	public JUMLClassifier(UMLClassifier classifier, Color color) {
+		this.classifier = classifier;
+		this.color = color;
 		
+		setLayout(new BorderLayout(0, 10));
+		setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, color));
+
 		drawTitlePanel();
 		
 		if (classifier instanceof UMLEnum) {
@@ -54,50 +100,6 @@ public class JUMLClassifier extends BoxPanel implements Movable {
 		}
 		
 		setSize(getPreferredSize());
-	}
-	
-	private class CustomMouseListener implements MouseListener {
-		
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			
-		}
-		
-		@Override
-		public void mousePressed(MouseEvent e) {
-			eX = e.getX();
-			eY = e.getY();
-		}
-		
-		@Override
-		public void mouseExited(MouseEvent e) {
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		}
-		
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			setCursor(new Cursor(Cursor.MOVE_CURSOR));
-		}
-		
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			
-		}
-    }
-	
-	private class CustomMouseMotionListener implements MouseMotionListener {
-		@Override
-		public void mouseMoved(MouseEvent e) {}
-		
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			move(e);
-		}
-	}
-	
-	public JUMLClassifier(UMLClassifier classifier, Color color) {
-		this.classifier = classifier;
-		this.color = color;
 		
 		addMouseListener(new CustomMouseListener());
 		addMouseMotionListener(new CustomMouseMotionListener());
@@ -105,7 +107,7 @@ public class JUMLClassifier extends BoxPanel implements Movable {
 
 	private void drawTitlePanel() {
 		titlePanel = new TitlePanel();
-		add(titlePanel);
+		add(titlePanel, BorderLayout.NORTH);
 	}
 	
 	private void drawAttributesPanel() {
@@ -117,7 +119,7 @@ public class JUMLClassifier extends BoxPanel implements Movable {
 			}
 		}
 		
-		add(attributesPanel);
+		add(attributesPanel, BorderLayout.CENTER);
 	}
 	
 	private void drawOperationsPanel() {
@@ -129,7 +131,7 @@ public class JUMLClassifier extends BoxPanel implements Movable {
 			}
 		}
 		
-		add(operationsPanel);
+		add(operationsPanel, BorderLayout.SOUTH);
 	}
 	
 
@@ -148,9 +150,9 @@ public class JUMLClassifier extends BoxPanel implements Movable {
 	private class TitlePanel extends BoxPanel {
 		private static final long serialVersionUID = 1L;
 
-		public TitlePanel() {
-			setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, color));
-			
+		public TitlePanel() {		
+			setBorderBottom(1);
+
 			if (classifier instanceof UMLInterface) {
 				add(new Label("<<interface>>"));
 			}
@@ -169,8 +171,7 @@ public class JUMLClassifier extends BoxPanel implements Movable {
 		private static final long serialVersionUID = 1L;
 		
 		public SectionPanel() {
-			setBorder(1);
-			setBorderTop(0);
+			setBorderBottom(1);
 			
 			setOpaque(false);
 		}
